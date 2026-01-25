@@ -81,11 +81,41 @@
         <div class="growth-info">Niveau: <span id="level">0</span>/10</div>
     </div>
 
+    <!-- Affichage de la monnaie -->
+    <div class="money-display">
+        <span class="money-icon">✿</span>
+        <span class="money-amount" id="moneyAmount">0</span>
+        <span class="money-rate">(+<span id="moneyRate">0</span>/s)</span>
+    </div>
+
+    <!-- Bouton Shop -->
+    <button class="shop-btn" id="shopBtn">
+        <span class="shop-icon">🛒</span>
+        <span class="shop-text">Shop</span>
+    </button>
+
+    <!-- Modal du Magasin -->
+    <div class="shop-modal" id="shopModal">
+        <div class="shop-content">
+            <div class="shop-header">
+                <h2>✿ Kawaii Shop ✿</h2>
+                <button class="shop-close" id="shopClose">✕</button>
+            </div>
+            <div class="shop-balance">
+                <span class="money-icon">✿</span>
+                <span id="shopBalance">0</span> Kawai Monnaie
+            </div>
+            <div class="shop-items" id="shopItems">
+                <!-- Items générés par JS -->
+            </div>
+        </div>
+    </div>
+
     <div class="instructions">
         Clique pour arroser et faire grandir la plante !
     </div>
 
-    <button class="reload-btn" onclick="location.reload()">
+    <button class="reload-btn" onclick="this.classList.add('spinning'); setTimeout(() => location.reload(), 400)">
         <span class="reload-icon">↻</span>
     </button>
 
