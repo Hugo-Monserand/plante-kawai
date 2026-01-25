@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plante Kawaii</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background">
+        <!-- Montagnes -->
+        <div class="mountain"></div>
+        <div class="mountain"></div>
+        <div class="mountain"></div>
+        <div class="mountain"></div>
+
+        <!-- Arbres cerisiers -->
+        <div class="tree">
+            <div class="tree-top"></div>
+            <div class="tree-trunk"></div>
+        </div>
+        <div class="tree">
+            <div class="tree-top"></div>
+            <div class="tree-trunk"></div>
+        </div>
+        <div class="tree">
+            <div class="tree-top"></div>
+            <div class="tree-trunk"></div>
+        </div>
+        <div class="tree">
+            <div class="tree-top"></div>
+            <div class="tree-trunk"></div>
+        </div>
+
+        <!-- Nuages -->
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+
+        <!-- Sol -->
+        <div class="ground"></div>
+    </div>
+
+    <!-- Arrosoir -->
+    <div class="watering-can" id="wateringCan">
+        <div class="can-body">
+            <div class="can-handle"></div>
+            <div class="can-spout">
+                <div class="water-drops">
+                    <div class="drop"></div>
+                    <div class="drop"></div>
+                    <div class="drop"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pot avec plante -->
+    <div class="pot-container">
+        <div class="plant" id="plant">
+            <div class="flower-head" id="flowerHead">
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="flower-center">
+                    <div class="flower-face">
+                        <div class="flower-eyes">
+                            <div class="flower-eye"></div>
+                            <div class="flower-eye"></div>
+                        </div>
+                        <div class="flower-smile"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="stem" id="stem"></div>
+            <div class="leaves" id="leaves"></div>
+        </div>
+        <div class="pot">
+            <div class="soil"></div>
+            <div class="pot-face">
+                <div class="pot-eyes">
+                    <div class="pot-eye"></div>
+                    <div class="pot-eye"></div>
+                </div>
+                <div class="pot-mouth"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interface -->
+    <div class="ui">
+        <h2>Plante Kawaii</h2>
+        <div class="growth-info">Niveau: <span id="level">0</span>/10</div>
+    </div>
+
+    <div class="instructions">
+        Clique pour arroser et faire grandir la plante !
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
