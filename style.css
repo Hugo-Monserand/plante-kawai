@@ -16,13 +16,13 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, #ffb7c5 0%, #ffd4dc 30%, #fff5f7 60%, #c8e6c9 80%, #a5d6a7 100%);
+    background: linear-gradient(180deg, #ffb7c5 0%, #ffc4d0 40%, #ffd8e0 55%, #fff5f7 70%, #c8e6c9 85%, #a5d6a7 100%);
 }
 
 /* Montagnes japonaises */
 .mountain {
     position: absolute;
-    bottom: 20%;
+    bottom: 18%;
     width: 0;
     height: 0;
     border-left: 150px solid transparent;
@@ -34,13 +34,13 @@ body {
 .mountain::before {
     content: '';
     position: absolute;
-    top: -40px;
-    left: -30px;
+    top: -2px;
+    left: -52px;
     width: 0;
     height: 0;
-    border-left: 30px solid transparent;
-    border-right: 30px solid transparent;
-    border-bottom: 50px solid #fff;
+    border-left: 52px solid transparent;
+    border-right: 52px solid transparent;
+    border-bottom: 70px solid #fff;
 }
 
 .mountain:nth-child(1) { left: 5%; }
