@@ -5,6 +5,7 @@ const leaves = document.getElementById('leaves');
 const flowersContainer = document.getElementById('flowersContainer');
 const levelDisplay = document.getElementById('level');
 const wateringCan = document.getElementById('wateringCan');
+const waterDrops = document.getElementById('waterDrops');
 const potMouth = document.getElementById('potMouth');
 
 function createFlower(className) {
@@ -115,9 +116,11 @@ function updatePlant() {
 
 function animateWatering() {
     wateringCan.classList.add('active');
+    waterDrops.classList.add('active');
 
     setTimeout(() => {
         wateringCan.classList.remove('active');
+        waterDrops.classList.remove('active');
     }, 1500);
 }
 

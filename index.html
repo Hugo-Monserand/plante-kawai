@@ -44,14 +44,15 @@
     <div class="watering-can" id="wateringCan">
         <div class="can-body">
             <div class="can-handle"></div>
-            <div class="can-spout">
-                <div class="water-drops">
-                    <div class="drop"></div>
-                    <div class="drop"></div>
-                    <div class="drop"></div>
-                </div>
-            </div>
+            <div class="can-spout"></div>
         </div>
+    </div>
+
+    <!-- Gouttes d'eau (séparées de l'arrosoir) -->
+    <div class="water-drops" id="waterDrops">
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
     </div>
 
     <!-- Pot avec plante -->
@@ -83,6 +84,10 @@
     <div class="instructions">
         Clique pour arroser et faire grandir la plante !
     </div>
+
+    <button class="reload-btn" onclick="location.reload()">
+        <span class="reload-icon">↻</span>
+    </button>
 
     <script src="script.js"></script>
 </body>
