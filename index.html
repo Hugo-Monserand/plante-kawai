@@ -78,7 +78,7 @@
     <!-- Interface -->
     <div class="ui">
         <h2>Plante Kawaii</h2>
-        <div class="growth-info">Niveau: <span id="level">0</span>/10</div>
+        <div class="growth-info">Niveau: <span id="level">0</span>/<span id="maxLevel">10</span></div>
     </div>
 
     <!-- Affichage de la monnaie -->
@@ -117,6 +117,33 @@
 
     <button class="reload-btn" onclick="this.classList.add('spinning'); setTimeout(() => location.reload(), 400)">
         <span class="reload-icon">↻</span>
+    </button>
+
+    <!-- Bouton Reset -->
+    <button class="reset-btn" id="resetBtn">
+        <span class="reset-icon">🗑️</span>
+    </button>
+
+    <!-- Modal de confirmation Reset -->
+    <div class="reset-modal" id="resetModal">
+        <div class="reset-content">
+            <div class="reset-icon-big">🥺</div>
+            <h2>Veux-tu uwu détruire ton jardin ?</h2>
+            <p>Cette action est irréversible...</p>
+            <div class="reset-buttons">
+                <button class="reset-cancel" id="resetCancel">Non, jamais !</button>
+                <button class="reset-confirm" id="resetConfirm">Oui, détruire</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Musique de fond -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <button class="music-btn" id="musicBtn">
+        <span class="music-icon">🔇</span>
     </button>
 
     <script src="script.js"></script>

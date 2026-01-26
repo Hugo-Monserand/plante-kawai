@@ -199,7 +199,9 @@ body {
     bottom: 82px;
     left: 50%;
     transform: translateX(-50%);
+    transform-origin: bottom center;
     z-index: 20;
+    transition: transform 0.5s ease;
 }
 
 .stem {
@@ -277,22 +279,12 @@ body {
 
 .petal {
     position: absolute;
-    width: 26px;
-    height: 38px;
     background: linear-gradient(135deg, #ffb7c5, #ff8fab);
     border-radius: 50%;
     left: 50%;
     top: 50%;
-    margin-left: -13px;
-    margin-top: -19px;
     transform-origin: center center;
 }
-
-.petal:nth-child(1) { transform: rotate(0deg) translateY(-22px); }
-.petal:nth-child(2) { transform: rotate(72deg) translateY(-22px); }
-.petal:nth-child(3) { transform: rotate(144deg) translateY(-22px); }
-.petal:nth-child(4) { transform: rotate(216deg) translateY(-22px); }
-.petal:nth-child(5) { transform: rotate(288deg) translateY(-22px); }
 
 .flower-center {
     position: absolute;
@@ -684,8 +676,7 @@ body {
 }
 
 .shop-item.owned {
-    opacity: 0.6;
-    background: rgba(200, 230, 200, 0.9);
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .shop-item.locked {
@@ -739,14 +730,27 @@ body {
     background: #ccc;
 }
 
-.item-price.owned-btn {
+.item-price.equip-btn {
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+}
+
+.item-price.equip-btn:hover {
+    box-shadow: 0 3px 10px rgba(139, 92, 246, 0.5);
+}
+
+.item-price.equipped-btn {
     background: #81c784;
     cursor: default;
 }
 
-.item-price.owned-btn:hover {
+.item-price.equipped-btn:hover {
     transform: none;
     box-shadow: none;
+}
+
+.shop-item.equipped {
+    background: rgba(200, 230, 200, 0.9);
+    border: 2px solid #81c784;
 }
 
 /* Effet Boost actif */
@@ -767,4 +771,140 @@ body {
 
 .boost-active .money-rate::after {
     content: ' ⚡';
+}
+
+/* Bouton Reset */
+.reset-btn {
+    position: absolute;
+    bottom: 75px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+    box-shadow: 0 4px 15px rgba(238, 90, 90, 0.4);
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    font-size: 18px;
+}
+
+.reset-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(238, 90, 90, 0.6);
+}
+
+.reset-btn:active {
+    transform: scale(0.95);
+}
+
+/* Modal Reset */
+.reset-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 300;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.reset-modal.active {
+    display: flex;
+}
+
+.reset-content {
+    background: linear-gradient(180deg, #fff5f7 0%, #ffe0e6 100%);
+    border-radius: 25px;
+    padding: 30px 40px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+    max-width: 350px;
+}
+
+.reset-icon-big {
+    font-size: 4em;
+    margin-bottom: 10px;
+}
+
+.reset-content h2 {
+    color: #e91e63;
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+.reset-content p {
+    color: #8d6e63;
+    margin-bottom: 25px;
+}
+
+.reset-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.reset-cancel {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #81c784, #66bb6a);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1em;
+}
+
+.reset-cancel:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(102, 187, 106, 0.5);
+}
+
+.reset-confirm {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1em;
+}
+
+.reset-confirm:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(238, 90, 90, 0.5);
+}
+
+/* Bouton Musique */
+.music-btn {
+    position: absolute;
+    top: 20px;
+    right: 180px;
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    font-size: 20px;
+}
+
+.music-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.music-btn.playing {
+    background: linear-gradient(135deg, #81c784, #66bb6a);
 }
