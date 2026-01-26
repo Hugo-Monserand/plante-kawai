@@ -703,6 +703,33 @@ body {
     color: #4caf50;
 }
 
+/* Code secret */
+.secret-code {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99;
+}
+
+.secret-code input {
+    width: 40px;
+    padding: 3px 5px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    font-size: 0.7em;
+    color: rgba(0, 0, 0, 0.3);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.secret-code input:focus {
+    width: 80px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #333;
+}
+
 /* Bouton Shop */
 .shop-btn {
     position: absolute;
@@ -1150,6 +1177,40 @@ body {
 }
 
 .deco-icon {
+    font-size: 1.2em;
+}
+
+/* Bouton Fonds */
+.bg-btn {
+    position: absolute;
+    bottom: 170px;
+    left: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #ef5350, #c62828);
+    box-shadow: 0 4px 15px rgba(198, 40, 40, 0.4);
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.bg-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(198, 40, 40, 0.6);
+}
+
+.bg-btn:active {
+    transform: scale(0.95);
+}
+
+.bg-icon {
     font-size: 1.2em;
 }
 
