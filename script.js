@@ -263,6 +263,9 @@ let selectedGroundColor = 'ground_green';
 let selectedTreeColor = 'tree_pink';
 let selectedMountainColor = 'mountain_green';
 
+// Visibilité des mini plantes
+let showSidePlants = true;
+
 // === Système d'arrière-plans ===
 const backgroundsData = [
     {
@@ -797,7 +800,8 @@ function saveGame() {
         placedDecorBgItems: placedDecorBgItems,
         selectedGroundColor: selectedGroundColor,
         selectedTreeColor: selectedTreeColor,
-        selectedMountainColor: selectedMountainColor
+        selectedMountainColor: selectedMountainColor,
+        showSidePlants: showSidePlants
     };
     localStorage.setItem('kawaiPlantSave', JSON.stringify(saveData));
 }
@@ -821,6 +825,7 @@ function loadGame() {
         selectedGroundColor = data.selectedGroundColor || 'ground_green';
         selectedTreeColor = data.selectedTreeColor || 'tree_pink';
         selectedMountainColor = data.selectedMountainColor || 'mountain_green';
+        showSidePlants = data.showSidePlants !== undefined ? data.showSidePlants : true;
 
         // Réappliquer les items équipés
         if (equippedPot) {
@@ -862,9 +867,44 @@ function closeGarden(e) {
 
 function renderGardenShop() {
     gardenBalance.textContent = Math.floor(kawaiMoney);
+    renderVisibilityToggle();
     renderSeeds();
     renderGardenPots();
     renderGardenSlots();
+}
+
+function renderVisibilityToggle() {
+    // Supprimer l'ancien toggle s'il existe
+    const oldToggle = document.getElementById('visibilityToggle');
+    if (oldToggle) oldToggle.remove();
+
+    // Créer le conteneur du toggle
+    const toggleContainer = document.createElement('div');
+    toggleContainer.id = 'visibilityToggle';
+    toggleContainer.className = 'visibility-toggle';
+    toggleContainer.innerHTML = `
+        <span class="toggle-label">🌱 Afficher les plantes sur l'écran</span>
+        <button class="toggle-btn ${showSidePlants ? 'active' : ''}" id="togglePlantsBtn">
+            ${showSidePlants ? '👁️ Visible' : '🙈 Masqué'}
+        </button>
+    `;
+
+    // Insérer après le shop-balance
+    const shopBalance = gardenModal.querySelector('.shop-balance');
+    shopBalance.after(toggleContainer);
+
+    // Event listener
+    document.getElementById('togglePlantsBtn').onclick = (e) => {
+        e.stopPropagation();
+        toggleSidePlantsVisibility();
+    };
+}
+
+function toggleSidePlantsVisibility() {
+    showSidePlants = !showSidePlants;
+    renderSidePlants();
+    renderVisibilityToggle();
+    saveGame();
 }
 
 function renderSeeds() {
@@ -1085,6 +1125,9 @@ function waterGardenPlant(slotIndex) {
 function renderSidePlants() {
     // Supprimer les anciennes plantes
     document.querySelectorAll('.side-plant').forEach(el => el.remove());
+
+    // Ne pas afficher si masqué
+    if (!showSidePlants) return;
 
     const plantsWithPlant = gardenSlots.filter(slot => slot.plant);
 
