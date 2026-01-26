@@ -126,6 +126,12 @@
         <span class="bg-text">Fonds</span>
     </button>
 
+    <!-- Bouton Décors -->
+    <button class="decor-btn" id="decorBtn">
+        <span class="decor-icon">🏰</span>
+        <span class="decor-text">Décors</span>
+    </button>
+
     <!-- Modal du Magasin -->
     <div class="shop-modal" id="shopModal">
         <div class="shop-content">
@@ -206,6 +212,23 @@
         </div>
     </div>
 
+    <!-- Modal Décors -->
+    <div class="shop-modal" id="decorModal">
+        <div class="shop-content decor-content">
+            <div class="shop-header">
+                <h2>🏰 Décors 🏰</h2>
+                <button class="shop-close" id="decorClose">✕</button>
+            </div>
+            <div class="shop-balance">
+                <span class="money-icon">✿</span>
+                <span id="decorBalance">0</span> Kawai Monnaie
+            </div>
+            <div class="shop-items" id="decorItems">
+                <!-- Items générés par JS -->
+            </div>
+        </div>
+    </div>
+
     <div class="instructions" id="instructions">
         Clique pour arroser et faire grandir la plante !
     </div>
@@ -213,6 +236,33 @@
     <button class="reload-btn" onclick="this.classList.add('spinning'); setTimeout(() => location.reload(), 400)">
         <span class="reload-icon">↻</span>
     </button>
+
+    <!-- Bouton Couleurs Nature -->
+    <button class="nature-color-btn" id="natureColorBtn">
+        <span class="nature-color-icon">🌿</span>
+    </button>
+
+    <!-- Modal Couleurs Nature -->
+    <div class="shop-modal" id="natureColorModal">
+        <div class="shop-content nature-color-content">
+            <div class="shop-header">
+                <h2>🌿 Couleurs Nature 🌿</h2>
+                <button class="shop-close" id="natureColorClose">✕</button>
+            </div>
+            <div class="color-section">
+                <h3>🌱 Sol</h3>
+                <div class="color-options" id="groundColors"></div>
+            </div>
+            <div class="color-section">
+                <h3>🌸 Arbres</h3>
+                <div class="color-options" id="treeColors"></div>
+            </div>
+            <div class="color-section">
+                <h3>⛰️ Montagnes</h3>
+                <div class="color-options" id="mountainColors"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bouton Reset -->
     <button class="reset-btn" id="resetBtn">
