@@ -109,6 +109,12 @@
         <span class="garden-text">Jardinerie</span>
     </button>
 
+    <!-- Bouton Déco -->
+    <button class="deco-btn" id="decoBtn">
+        <span class="deco-icon">✨</span>
+        <span class="deco-text">Déco</span>
+    </button>
+
     <!-- Modal du Magasin -->
     <div class="shop-modal" id="shopModal">
         <div class="shop-content">
@@ -151,6 +157,23 @@
             <h3 class="garden-section-title">🌸 Mon Jardin</h3>
             <div class="garden-slots" id="gardenSlots">
                 <!-- Emplacements de plantes générés par JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Déco -->
+    <div class="shop-modal" id="decoModal">
+        <div class="shop-content deco-content">
+            <div class="shop-header">
+                <h2>✨ Déco Kawaii ✨</h2>
+                <button class="shop-close" id="decoClose">✕</button>
+            </div>
+            <div class="shop-balance">
+                <span class="money-icon">✿</span>
+                <span id="decoBalance">0</span> Kawai Monnaie
+            </div>
+            <div class="shop-items" id="decoItems">
+                <!-- Items générés par JS -->
             </div>
         </div>
     </div>

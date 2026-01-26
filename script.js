@@ -174,6 +174,33 @@ let gardenSlots = [
 ];
 let ownedSeeds = [];
 
+// === Système de Déco ===
+const decoItemsData = [
+    { id: 'deco_heart', name: 'Coeur', emoji: '💖', price: 500 },
+    { id: 'deco_star', name: 'Étoile', emoji: '⭐', price: 500 },
+    { id: 'deco_sparkle', name: 'Étincelle', emoji: '✨', price: 750 },
+    { id: 'deco_butterfly', name: 'Papillon', emoji: '🦋', price: 1500 },
+    { id: 'deco_ladybug', name: 'Coccinelle', emoji: '🐞', price: 1500 },
+    { id: 'deco_bee', name: 'Abeille', emoji: '🐝', price: 1500 },
+    { id: 'deco_snail', name: 'Escargot', emoji: '🐌', price: 1000 },
+    { id: 'deco_mushroom', name: 'Champignon', emoji: '🍄', price: 2000 },
+    { id: 'deco_clover', name: 'Trèfle', emoji: '🍀', price: 2500 },
+    { id: 'deco_cherry', name: 'Cerises', emoji: '🍒', price: 1200 },
+    { id: 'deco_strawberry', name: 'Fraise', emoji: '🍓', price: 1200 },
+    { id: 'deco_rainbow', name: 'Arc-en-ciel', emoji: '🌈', price: 5000 },
+    { id: 'deco_cloud', name: 'Nuage', emoji: '☁️', price: 1000 },
+    { id: 'deco_sun', name: 'Soleil', emoji: '🌞', price: 3000 },
+    { id: 'deco_moon', name: 'Lune', emoji: '🌙', price: 3000 },
+    { id: 'deco_fairy', name: 'Grande Fée', emoji: '<img src="fairy.png" class="deco-img">', price: 10000, isImage: true },
+    { id: 'deco_crystal', name: 'Cristal', emoji: '💎', price: 7500 },
+    { id: 'deco_ribbon', name: 'Ruban', emoji: '🎀', price: 800 },
+    { id: 'deco_balloon', name: 'Ballon', emoji: '🎈', price: 600 },
+    { id: 'deco_gift', name: 'Cadeau', emoji: '🎁', price: 2000 }
+];
+
+// Items de déco placés sur la map
+let placedDecoItems = [];
+
 // Éléments DOM jardinerie
 const gardenBtn = document.getElementById('gardenBtn');
 const gardenModal = document.getElementById('gardenModal');
@@ -184,6 +211,13 @@ const gardenPotItemsContainer = document.getElementById('gardenPotItems');
 const gardenSlotsContainer = document.getElementById('gardenSlots');
 const leftPlantsContainer = document.getElementById('leftPlants');
 const rightPlantsContainer = document.getElementById('rightPlants');
+
+// Éléments DOM déco
+const decoBtn = document.getElementById('decoBtn');
+const decoModal = document.getElementById('decoModal');
+const decoClose = document.getElementById('decoClose');
+const decoBalance = document.getElementById('decoBalance');
+const decoItemsContainer = document.getElementById('decoItems');
 
 function createFlower(className, size = 70) {
     const flower = document.createElement('div');
@@ -331,7 +365,9 @@ document.addEventListener('click', (e) => {
     if (e.target.closest('.shop-modal') || e.target.closest('.shop-btn') ||
         e.target.closest('.reload-btn') || e.target.closest('.reset-btn') ||
         e.target.closest('.reset-modal') || e.target.closest('.garden-btn') ||
-        e.target.closest('#gardenModal') || e.target.closest('.side-plant')) {
+        e.target.closest('#gardenModal') || e.target.closest('.side-plant') ||
+        e.target.closest('.deco-btn') || e.target.closest('#decoModal') ||
+        e.target.closest('.deco-item')) {
         return;
     }
 
@@ -581,7 +617,8 @@ function saveGame() {
         equippedPot: equippedPot,
         equippedFlower: equippedFlower,
         gardenSlots: gardenSlots,
-        ownedSeeds: ownedSeeds
+        ownedSeeds: ownedSeeds,
+        placedDecoItems: placedDecoItems
     };
     localStorage.setItem('kawaiPlantSave', JSON.stringify(saveData));
 }
@@ -598,6 +635,7 @@ function loadGame() {
         equippedFlower = data.equippedFlower || null;
         gardenSlots = data.gardenSlots || [{ unlocked: true, plant: null, level: 0 }];
         ownedSeeds = data.ownedSeeds || [];
+        placedDecoItems = data.placedDecoItems || [];
 
         // Réappliquer les items équipés
         if (equippedPot) {
@@ -1060,6 +1098,229 @@ gardenModal.addEventListener('click', (e) => {
     }
 });
 
+// === Fonctions Déco ===
+
+function openDeco(e) {
+    e.stopPropagation();
+    decoModal.classList.add('active');
+    renderDecoShop();
+}
+
+function closeDeco(e) {
+    if (e) e.stopPropagation();
+    decoModal.classList.remove('active');
+}
+
+function renderDecoShop() {
+    decoBalance.textContent = Math.floor(kawaiMoney);
+    decoItemsContainer.innerHTML = '';
+
+    decoItemsData.forEach(item => {
+        const canAfford = kawaiMoney >= item.price;
+
+        const itemEl = document.createElement('div');
+        itemEl.className = 'shop-item' + (!canAfford ? ' locked' : '');
+
+        itemEl.innerHTML = `
+            <div class="item-icon">${item.emoji}</div>
+            <div class="item-info">
+                <div class="item-name">${item.name}</div>
+                <div class="item-desc">Déco kawaii déplaçable</div>
+            </div>
+            <button class="item-price" ${!canAfford ? 'disabled' : ''}>
+                ✿ ${item.price}
+            </button>
+        `;
+
+        if (canAfford) {
+            itemEl.querySelector('button').onclick = (e) => {
+                e.stopPropagation();
+                buyDecoItem(item);
+            };
+        }
+
+        decoItemsContainer.appendChild(itemEl);
+    });
+}
+
+function buyDecoItem(item) {
+    if (kawaiMoney < item.price) return;
+
+    kawaiMoney -= item.price;
+
+    // Ajouter l'item au centre de l'écran
+    const newItem = {
+        id: item.id + '_' + Date.now(),
+        type: item.id,
+        emoji: item.emoji,
+        x: window.innerWidth / 2 - 20,
+        y: window.innerHeight / 2 - 20
+    };
+
+    placedDecoItems.push(newItem);
+
+    updateMoneyDisplay();
+    renderDecoShop();
+    renderDecoItems();
+    saveGame();
+}
+
+function renderDecoItems() {
+    // Supprimer les anciens items
+    document.querySelectorAll('.deco-item').forEach(el => el.remove());
+
+    placedDecoItems.forEach((item, index) => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'deco-item';
+        itemEl.dataset.index = index;
+        itemEl.style.left = item.x + 'px';
+        itemEl.style.top = item.y + 'px';
+
+        const size = item.size || 1;
+        itemEl.style.transform = `scale(${size})`;
+
+        itemEl.innerHTML = `<span class="deco-emoji">${item.emoji}</span>`;
+
+        // Drag and drop
+        makeDecoDraggable(itemEl, index);
+
+        // Clic droit pour supprimer
+        itemEl.oncontextmenu = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            showDecoContextMenu(e.clientX, e.clientY, index);
+        };
+
+        document.body.appendChild(itemEl);
+    });
+}
+
+function makeDecoDraggable(element, itemIndex) {
+    let offsetX = 0;
+    let offsetY = 0;
+
+    element.onmousedown = function(e) {
+        if (e.button !== 0) return; // Seulement clic gauche
+        e.preventDefault();
+
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+
+        element.classList.add('dragging');
+
+        document.onmousemove = function(e) {
+            e.preventDefault();
+
+            let newX = e.clientX - offsetX;
+            let newY = e.clientY - offsetY;
+
+            // Limiter aux bords
+            newX = Math.max(0, Math.min(newX, window.innerWidth - 50));
+            newY = Math.max(0, Math.min(newY, window.innerHeight - 50));
+
+            element.style.left = newX + 'px';
+            element.style.top = newY + 'px';
+        };
+
+        document.onmouseup = function() {
+            element.classList.remove('dragging');
+
+            // Sauvegarder la position
+            placedDecoItems[itemIndex].x = parseInt(element.style.left) || 0;
+            placedDecoItems[itemIndex].y = parseInt(element.style.top) || 0;
+            saveGame();
+
+            document.onmousemove = null;
+            document.onmouseup = null;
+        };
+    };
+}
+
+function showDecoContextMenu(x, y, itemIndex) {
+    // Supprimer l'ancien menu
+    const oldMenu = document.querySelector('.deco-context-menu');
+    if (oldMenu) oldMenu.remove();
+
+    const menu = document.createElement('div');
+    menu.className = 'pot-context-menu deco-context-menu';
+    menu.style.left = x + 'px';
+    menu.style.top = y + 'px';
+
+    const currentSize = placedDecoItems[itemIndex].size || 1;
+
+    // Option agrandir
+    const biggerOption = document.createElement('div');
+    biggerOption.className = 'pot-menu-item';
+    biggerOption.innerHTML = '🔍+ Agrandir';
+    biggerOption.onclick = () => {
+        placedDecoItems[itemIndex].size = Math.min((currentSize + 0.25), 3);
+        saveGame();
+        renderDecoItems();
+        menu.remove();
+    };
+    menu.appendChild(biggerOption);
+
+    // Option réduire
+    const smallerOption = document.createElement('div');
+    smallerOption.className = 'pot-menu-item';
+    smallerOption.innerHTML = '🔍- Réduire';
+    smallerOption.onclick = () => {
+        placedDecoItems[itemIndex].size = Math.max((currentSize - 0.25), 0.25);
+        saveGame();
+        renderDecoItems();
+        menu.remove();
+    };
+    menu.appendChild(smallerOption);
+
+    // Option taille normale
+    const resetOption = document.createElement('div');
+    resetOption.className = 'pot-menu-item';
+    resetOption.innerHTML = '↺ Taille normale';
+    resetOption.onclick = () => {
+        placedDecoItems[itemIndex].size = 1;
+        saveGame();
+        renderDecoItems();
+        menu.remove();
+    };
+    menu.appendChild(resetOption);
+
+    // Séparateur
+    const separator = document.createElement('div');
+    separator.style.borderTop = '1px dashed #ccc';
+    separator.style.margin = '5px 0';
+    menu.appendChild(separator);
+
+    // Option supprimer
+    const deleteOption = document.createElement('div');
+    deleteOption.className = 'pot-menu-item';
+    deleteOption.innerHTML = '🗑️ Supprimer';
+    deleteOption.onclick = () => {
+        placedDecoItems.splice(itemIndex, 1);
+        saveGame();
+        renderDecoItems();
+        menu.remove();
+    };
+    menu.appendChild(deleteOption);
+
+    document.body.appendChild(menu);
+
+    setTimeout(() => {
+        document.addEventListener('click', function closeMenu() {
+            menu.remove();
+            document.removeEventListener('click', closeMenu);
+        });
+    }, 10);
+}
+
+// Event listeners déco
+decoBtn.addEventListener('click', openDeco);
+decoClose.addEventListener('click', closeDeco);
+decoModal.addEventListener('click', (e) => {
+    if (e.target === decoModal) {
+        closeDeco(e);
+    }
+});
+
 // === Système de Reset ===
 
 const resetBtn = document.getElementById('resetBtn');
@@ -1144,3 +1405,6 @@ updateLevelDisplay();
 
 // Afficher les plantes du jardin
 renderSidePlants();
+
+// Afficher les décos
+renderDecoItems();
