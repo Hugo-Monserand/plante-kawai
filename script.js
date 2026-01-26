@@ -191,7 +191,8 @@ const decoItemsData = [
     { id: 'deco_cloud', name: 'Nuage', emoji: '☁️', price: 1000 },
     { id: 'deco_sun', name: 'Soleil', emoji: '🌞', price: 3000 },
     { id: 'deco_moon', name: 'Lune', emoji: '🌙', price: 3000 },
-    { id: 'deco_fairy', name: 'Grande Fée', emoji: '<img src="fairy.png" class="deco-img">', price: 1000000, isImage: true },
+    { id: 'deco_fairy', name: 'Grande Fée', emoji: '<img src="fairy.png" class="deco-img">', price: 100000, isImage: true },
+    { id: 'deco_million', name: 'Item Légendaire', emoji: '<img src="million.png" class="deco-img">', price: 1000000, isImage: true },
     { id: 'deco_crystal', name: 'Cristal', emoji: '💎', price: 7500 },
     { id: 'deco_ribbon', name: 'Ruban', emoji: '🎀', price: 800 },
     { id: 'deco_balloon', name: 'Ballon', emoji: '🎈', price: 600 },
@@ -200,6 +201,93 @@ const decoItemsData = [
 
 // Items de déco placés sur la map
 let placedDecoItems = [];
+
+// === Système d'arrière-plans ===
+const backgroundsData = [
+    {
+        id: 'bg_default',
+        name: 'Jardin Kawaii',
+        desc: 'Le jardin original',
+        icon: '🌸',
+        price: 0,
+        gradient: 'linear-gradient(180deg, #ffb7c5 0%, #ffc4d0 40%, #ffd8e0 55%, #fff5f7 70%, #c8e6c9 85%, #a5d6a7 100%)'
+    },
+    {
+        id: 'bg_sunset',
+        name: 'Coucher de Soleil',
+        desc: 'Un ciel orangé magnifique',
+        icon: '🌅',
+        price: 50000,
+        gradient: 'linear-gradient(180deg, #ff7043 0%, #ffab91 30%, #ffccbc 50%, #fff3e0 70%, #a5d6a7 85%, #81c784 100%)'
+    },
+    {
+        id: 'bg_night',
+        name: 'Nuit Étoilée',
+        desc: 'Un ciel nocturne paisible',
+        icon: '🌙',
+        price: 75000,
+        gradient: 'linear-gradient(180deg, #1a237e 0%, #283593 30%, #3949ab 50%, #5c6bc0 70%, #1b5e20 85%, #2e7d32 100%)'
+    },
+    {
+        id: 'bg_ocean',
+        name: 'Océan Tropical',
+        desc: 'Une plage paradisiaque',
+        icon: '🏝️',
+        price: 100000,
+        gradient: 'linear-gradient(180deg, #4fc3f7 0%, #81d4fa 30%, #b3e5fc 50%, #e1f5fe 70%, #fff59d 85%, #ffe082 100%)'
+    },
+    {
+        id: 'bg_forest',
+        name: 'Forêt Enchantée',
+        desc: 'Une forêt magique',
+        icon: '🌲',
+        price: 150000,
+        gradient: 'linear-gradient(180deg, #a5d6a7 0%, #81c784 30%, #66bb6a 50%, #4caf50 70%, #388e3c 85%, #2e7d32 100%)'
+    },
+    {
+        id: 'bg_candy',
+        name: 'Monde Bonbon',
+        desc: 'Tout est sucré ici',
+        icon: '🍭',
+        price: 200000,
+        gradient: 'linear-gradient(180deg, #f48fb1 0%, #f8bbd9 30%, #e1bee7 50%, #ce93d8 70%, #ba68c8 85%, #ab47bc 100%)'
+    },
+    {
+        id: 'bg_aurora',
+        name: 'Aurore Boréale',
+        desc: 'Un spectacle magique',
+        icon: '✨',
+        price: 300000,
+        gradient: 'linear-gradient(180deg, #0d47a1 0%, #1565c0 20%, #42a5f5 35%, #4db6ac 50%, #81c784 65%, #aed581 80%, #dce775 100%)'
+    },
+    {
+        id: 'bg_sakura',
+        name: 'Cerisiers en Fleurs',
+        desc: 'Le printemps au Japon',
+        icon: '🌸',
+        price: 400000,
+        gradient: 'linear-gradient(180deg, #fce4ec 0%, #f8bbd9 30%, #f48fb1 50%, #f06292 70%, #c8e6c9 85%, #a5d6a7 100%)'
+    },
+    {
+        id: 'bg_rainbow',
+        name: 'Arc-en-ciel',
+        desc: 'Toutes les couleurs !',
+        icon: '🌈',
+        price: 750000,
+        gradient: 'linear-gradient(180deg, #ef5350 0%, #ff7043 15%, #ffca28 30%, #66bb6a 45%, #42a5f5 60%, #5c6bc0 75%, #ab47bc 90%, #81c784 100%)'
+    },
+    {
+        id: 'bg_galaxy',
+        name: 'Galaxie',
+        desc: 'Voyage dans l\'espace',
+        icon: '🌌',
+        price: 1500000,
+        gradient: 'linear-gradient(180deg, #0d0221 0%, #1a0533 20%, #2d1b4e 35%, #4a1942 50%, #6b2d5c 65%, #1b5e20 85%, #2e7d32 100%)'
+    }
+];
+
+let equippedBackground = 'bg_default';
+let ownedBackgrounds = ['bg_default'];
 
 // Éléments DOM jardinerie
 const gardenBtn = document.getElementById('gardenBtn');
@@ -218,6 +306,14 @@ const decoModal = document.getElementById('decoModal');
 const decoClose = document.getElementById('decoClose');
 const decoBalance = document.getElementById('decoBalance');
 const decoItemsContainer = document.getElementById('decoItems');
+
+// Éléments DOM fonds
+const bgBtn = document.getElementById('bgBtn');
+const bgModal = document.getElementById('bgModal');
+const bgClose = document.getElementById('bgClose');
+const bgBalance = document.getElementById('bgBalance');
+const bgItemsContainer = document.getElementById('bgItems');
+const backgroundEl = document.querySelector('.background');
 
 function createFlower(className, size = 70) {
     const flower = document.createElement('div');
@@ -367,7 +463,8 @@ document.addEventListener('click', (e) => {
         e.target.closest('.reset-modal') || e.target.closest('.garden-btn') ||
         e.target.closest('#gardenModal') || e.target.closest('.side-plant') ||
         e.target.closest('.deco-btn') || e.target.closest('#decoModal') ||
-        e.target.closest('.deco-item') || e.target.closest('.music-btn')) {
+        e.target.closest('.deco-item') || e.target.closest('.music-btn') ||
+        e.target.closest('.bg-btn') || e.target.closest('#bgModal')) {
         return;
     }
 
@@ -618,7 +715,9 @@ function saveGame() {
         equippedFlower: equippedFlower,
         gardenSlots: gardenSlots,
         ownedSeeds: ownedSeeds,
-        placedDecoItems: placedDecoItems
+        placedDecoItems: placedDecoItems,
+        ownedBackgrounds: ownedBackgrounds,
+        equippedBackground: equippedBackground
     };
     localStorage.setItem('kawaiPlantSave', JSON.stringify(saveData));
 }
@@ -636,6 +735,8 @@ function loadGame() {
         gardenSlots = data.gardenSlots || [{ unlocked: true, plant: null, level: 0 }];
         ownedSeeds = data.ownedSeeds || [];
         placedDecoItems = data.placedDecoItems || [];
+        ownedBackgrounds = data.ownedBackgrounds || ['bg_default'];
+        equippedBackground = data.equippedBackground || 'bg_default';
 
         // Réappliquer les items équipés
         if (equippedPot) {
@@ -645,6 +746,14 @@ function loadGame() {
         if (equippedFlower) {
             const flowerItem = shopItemsData.find(i => i.id === equippedFlower);
             if (flowerItem) applyFlowerColor(flowerItem.color);
+        }
+
+        // Réappliquer l'arrière-plan
+        if (equippedBackground) {
+            const bg = backgroundsData.find(b => b.id === equippedBackground);
+            if (bg) {
+                document.querySelector('.background').style.background = bg.gradient;
+            }
         }
     }
 }
@@ -1321,6 +1430,105 @@ decoModal.addEventListener('click', (e) => {
     }
 });
 
+// === Fonctions Fonds ===
+
+function openBg(e) {
+    e.stopPropagation();
+    bgModal.classList.add('active');
+    renderBgShop();
+}
+
+function closeBg(e) {
+    if (e) e.stopPropagation();
+    bgModal.classList.remove('active');
+}
+
+function renderBgShop() {
+    bgBalance.textContent = Math.floor(kawaiMoney);
+    bgItemsContainer.innerHTML = '';
+
+    backgroundsData.forEach(bg => {
+        const isOwned = ownedBackgrounds.includes(bg.id);
+        const isEquipped = equippedBackground === bg.id;
+        const canAfford = kawaiMoney >= bg.price;
+
+        const itemEl = document.createElement('div');
+        itemEl.className = 'shop-item' + (isOwned ? ' owned' : '') + (!canAfford && !isOwned ? ' locked' : '') + (isEquipped ? ' equipped' : '');
+
+        let buttonText = `✿ ${bg.price}`;
+        let buttonClass = 'item-price';
+        let buttonDisabled = false;
+
+        if (isOwned) {
+            if (isEquipped) {
+                buttonText = '✓ Équipé';
+                buttonClass += ' equipped-btn';
+                buttonDisabled = true;
+            } else {
+                buttonText = 'Équiper';
+                buttonClass += ' equip-btn';
+            }
+        } else if (!canAfford) {
+            buttonDisabled = true;
+        }
+
+        itemEl.innerHTML = `
+            <div class="item-icon">${bg.icon}</div>
+            <div class="item-info">
+                <div class="item-name">${bg.name}</div>
+                <div class="item-desc">${bg.desc}</div>
+            </div>
+            <button class="${buttonClass}" ${buttonDisabled ? 'disabled' : ''}>
+                ${buttonText}
+            </button>
+        `;
+
+        if (!buttonDisabled) {
+            itemEl.querySelector('button').onclick = (e) => {
+                e.stopPropagation();
+                if (isOwned) {
+                    equipBackground(bg.id);
+                } else {
+                    buyBackground(bg);
+                }
+            };
+        }
+
+        bgItemsContainer.appendChild(itemEl);
+    });
+}
+
+function buyBackground(bg) {
+    if (kawaiMoney < bg.price) return;
+
+    kawaiMoney -= bg.price;
+    ownedBackgrounds.push(bg.id);
+    equipBackground(bg.id);
+
+    updateMoneyDisplay();
+    renderBgShop();
+    saveGame();
+}
+
+function equipBackground(bgId) {
+    equippedBackground = bgId;
+    const bg = backgroundsData.find(b => b.id === bgId);
+    if (bg) {
+        backgroundEl.style.background = bg.gradient;
+    }
+    renderBgShop();
+    saveGame();
+}
+
+// Event listeners fonds
+bgBtn.addEventListener('click', openBg);
+bgClose.addEventListener('click', closeBg);
+bgModal.addEventListener('click', (e) => {
+    if (e.target === bgModal) {
+        closeBg(e);
+    }
+});
+
 // === Système de Reset ===
 
 const resetBtn = document.getElementById('resetBtn');
@@ -1458,3 +1666,35 @@ renderSidePlants();
 
 // Afficher les décos
 renderDecoItems();
+
+// Code secret
+const secretInput = document.getElementById('secretInput');
+const instructions = document.getElementById('instructions');
+const originalInstruction = instructions.textContent;
+
+secretInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        if (secretInput.value === '42') {
+            kawaiMoney += 1000000;
+            updateMoneyDisplay();
+            saveGame();
+            secretInput.value = '';
+            secretInput.blur();
+            instructions.textContent = originalInstruction;
+        } else {
+            secretInput.value = '';
+        }
+    }
+});
+
+secretInput.addEventListener('click', (e) => {
+    e.stopPropagation();
+});
+
+secretInput.addEventListener('focus', () => {
+    instructions.textContent = 'Code à deux chiffres...';
+});
+
+secretInput.addEventListener('blur', () => {
+    instructions.textContent = originalInstruction;
+});

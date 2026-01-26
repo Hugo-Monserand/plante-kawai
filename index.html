@@ -97,6 +97,11 @@
         <span class="money-rate">(+<span id="moneyRate">0</span>/s)</span>
     </div>
 
+    <!-- Code secret -->
+    <div class="secret-code">
+        <input type="password" id="secretInput" placeholder="..." maxlength="10">
+    </div>
+
     <!-- Bouton Shop -->
     <button class="shop-btn" id="shopBtn">
         <span class="shop-icon">🛒</span>
@@ -113,6 +118,12 @@
     <button class="deco-btn" id="decoBtn">
         <span class="deco-icon">✨</span>
         <span class="deco-text">Déco</span>
+    </button>
+
+    <!-- Bouton Fonds -->
+    <button class="bg-btn" id="bgBtn">
+        <span class="bg-icon">🎨</span>
+        <span class="bg-text">Fonds</span>
     </button>
 
     <!-- Modal du Magasin -->
@@ -161,6 +172,23 @@
         </div>
     </div>
 
+    <!-- Modal Fonds -->
+    <div class="shop-modal" id="bgModal">
+        <div class="shop-content bg-content">
+            <div class="shop-header">
+                <h2>🎨 Arrière-plans 🎨</h2>
+                <button class="shop-close" id="bgClose">✕</button>
+            </div>
+            <div class="shop-balance">
+                <span class="money-icon">✿</span>
+                <span id="bgBalance">0</span> Kawai Monnaie
+            </div>
+            <div class="shop-items" id="bgItems">
+                <!-- Items générés par JS -->
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Déco -->
     <div class="shop-modal" id="decoModal">
         <div class="shop-content deco-content">
@@ -178,7 +206,7 @@
         </div>
     </div>
 
-    <div class="instructions">
+    <div class="instructions" id="instructions">
         Clique pour arroser et faire grandir la plante !
     </div>
 
