@@ -191,7 +191,7 @@ const decoItemsData = [
     { id: 'deco_cloud', name: 'Nuage', emoji: '☁️', price: 1000 },
     { id: 'deco_sun', name: 'Soleil', emoji: '🌞', price: 3000 },
     { id: 'deco_moon', name: 'Lune', emoji: '🌙', price: 3000 },
-    { id: 'deco_fairy', name: 'Grande Fée', emoji: '<img src="fairy.png" class="deco-img">', price: 10000, isImage: true },
+    { id: 'deco_fairy', name: 'Grande Fée', emoji: '<img src="fairy.png" class="deco-img">', price: 1000000, isImage: true },
     { id: 'deco_crystal', name: 'Cristal', emoji: '💎', price: 7500 },
     { id: 'deco_ribbon', name: 'Ruban', emoji: '🎀', price: 800 },
     { id: 'deco_balloon', name: 'Ballon', emoji: '🎈', price: 600 },
@@ -367,7 +367,7 @@ document.addEventListener('click', (e) => {
         e.target.closest('.reset-modal') || e.target.closest('.garden-btn') ||
         e.target.closest('#gardenModal') || e.target.closest('.side-plant') ||
         e.target.closest('.deco-btn') || e.target.closest('#decoModal') ||
-        e.target.closest('.deco-item')) {
+        e.target.closest('.deco-item') || e.target.closest('.music-btn')) {
         return;
     }
 
@@ -1377,7 +1377,57 @@ function toggleMusic(e) {
     musicPlaying = !musicPlaying;
 }
 
-musicBtn.addEventListener('click', toggleMusic);
+// Drag and drop pour le bouton musique
+let musicBtnDragging = false;
+
+musicBtn.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return;
+
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const rect = musicBtn.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+    let hasMoved = false;
+
+    function onMouseMove(e) {
+        const dx = Math.abs(e.clientX - startX);
+        const dy = Math.abs(e.clientY - startY);
+
+        if (dx > 5 || dy > 5) {
+            hasMoved = true;
+            musicBtnDragging = true;
+            musicBtn.classList.add('dragging');
+
+            let newX = e.clientX - offsetX;
+            let newY = e.clientY - offsetY;
+
+            newX = Math.max(0, Math.min(newX, window.innerWidth - 45));
+            newY = Math.max(0, Math.min(newY, window.innerHeight - 45));
+
+            musicBtn.style.left = newX + 'px';
+            musicBtn.style.top = newY + 'px';
+            musicBtn.style.right = 'auto';
+        }
+    }
+
+    function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        musicBtn.classList.remove('dragging');
+
+        if (!hasMoved) {
+            toggleMusic();
+        }
+
+        setTimeout(() => {
+            musicBtnDragging = false;
+        }, 10);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+});
 
 // Lancer la musique au premier clic sur la page
 document.addEventListener('click', () => {

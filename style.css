@@ -1055,7 +1055,7 @@ body {
 
 /* Bouton Musique */
 .music-btn {
-    position: absolute;
+    position: fixed;
     top: 20px;
     right: 180px;
     width: 45px;
@@ -1064,10 +1064,16 @@ body {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.9);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+    cursor: grab;
     z-index: 100;
-    transition: all 0.3s ease;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
     font-size: 20px;
+    user-select: none;
+}
+
+.music-btn.dragging {
+    cursor: grabbing;
+    z-index: 1000;
 }
 
 .music-btn:hover {
