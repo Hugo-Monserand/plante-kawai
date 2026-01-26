@@ -55,24 +55,33 @@
         <div class="drop"></div>
     </div>
 
-    <!-- Pot avec plante -->
-    <div class="pot-container">
-        <div class="plant" id="plant">
-            <div class="flowers-container" id="flowersContainer"></div>
-            <div class="stem" id="stem">
-                <div class="leaves-container" id="leaves"></div>
-            </div>
-        </div>
-        <div class="pot">
-            <div class="soil"></div>
-            <div class="pot-face">
-                <div class="pot-eyes">
-                    <div class="pot-eye"></div>
-                    <div class="pot-eye"></div>
+    <!-- Conteneur de toutes les plantes -->
+    <div class="all-plants-container">
+        <!-- Plantes secondaires gauche -->
+        <div class="side-plants left-plants" id="leftPlants"></div>
+
+        <!-- Pot avec plante principale -->
+        <div class="pot-container main-plant">
+            <div class="plant" id="plant">
+                <div class="flowers-container" id="flowersContainer"></div>
+                <div class="stem" id="stem">
+                    <div class="leaves-container" id="leaves"></div>
                 </div>
-                <div class="pot-mouth" id="potMouth"></div>
+            </div>
+            <div class="pot">
+                <div class="soil"></div>
+                <div class="pot-face">
+                    <div class="pot-eyes">
+                        <div class="pot-eye"></div>
+                        <div class="pot-eye"></div>
+                    </div>
+                    <div class="pot-mouth" id="potMouth"></div>
+                </div>
             </div>
         </div>
+
+        <!-- Plantes secondaires droite -->
+        <div class="side-plants right-plants" id="rightPlants"></div>
     </div>
 
     <!-- Interface -->
@@ -94,6 +103,18 @@
         <span class="shop-text">Shop</span>
     </button>
 
+    <!-- Bouton Jardinerie -->
+    <button class="garden-btn" id="gardenBtn">
+        <span class="garden-icon">🌱</span>
+        <span class="garden-text">Jardinerie</span>
+    </button>
+
+    <!-- Bouton Déco -->
+    <button class="deco-btn" id="decoBtn">
+        <span class="deco-icon">✨</span>
+        <span class="deco-text">Déco</span>
+    </button>
+
     <!-- Modal du Magasin -->
     <div class="shop-modal" id="shopModal">
         <div class="shop-content">
@@ -106,6 +127,52 @@
                 <span id="shopBalance">0</span> Kawai Monnaie
             </div>
             <div class="shop-items" id="shopItems">
+                <!-- Items générés par JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de la Jardinerie -->
+    <div class="shop-modal" id="gardenModal">
+        <div class="shop-content garden-content">
+            <div class="shop-header">
+                <h2>🌱 Jardinerie 🌱</h2>
+                <button class="shop-close" id="gardenClose">✕</button>
+            </div>
+            <div class="shop-balance">
+                <span class="money-icon">✿</span>
+                <span id="gardenBalance">0</span> Kawai Monnaie
+            </div>
+
+            <h3 class="garden-section-title">🌻 Graines</h3>
+            <div class="shop-items" id="seedItems">
+                <!-- Graines générées par JS -->
+            </div>
+
+            <h3 class="garden-section-title">🪴 Pots de Jardin</h3>
+            <div class="shop-items" id="gardenPotItems">
+                <!-- Pots générés par JS -->
+            </div>
+
+            <h3 class="garden-section-title">🌸 Mon Jardin</h3>
+            <div class="garden-slots" id="gardenSlots">
+                <!-- Emplacements de plantes générés par JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Déco -->
+    <div class="shop-modal" id="decoModal">
+        <div class="shop-content deco-content">
+            <div class="shop-header">
+                <h2>✨ Déco Kawaii ✨</h2>
+                <button class="shop-close" id="decoClose">✕</button>
+            </div>
+            <div class="shop-balance">
+                <span class="money-icon">✿</span>
+                <span id="decoBalance">0</span> Kawai Monnaie
+            </div>
+            <div class="shop-items" id="decoItems">
                 <!-- Items générés par JS -->
             </div>
         </div>
