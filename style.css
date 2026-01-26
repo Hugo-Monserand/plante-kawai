@@ -970,6 +970,76 @@ body {
     content: ' ⚡';
 }
 
+/* Bouton Couleurs Nature */
+.nature-color-btn {
+    position: absolute;
+    bottom: 130px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #81c784, #4caf50);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    font-size: 18px;
+}
+
+.nature-color-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+}
+
+.nature-color-btn:active {
+    transform: scale(0.95);
+}
+
+/* Modal Couleurs Nature */
+.nature-color-content {
+    max-width: 400px;
+}
+
+.color-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+}
+
+.color-section h3 {
+    color: #5d4037;
+    margin-bottom: 12px;
+    font-size: 1.1em;
+}
+
+.color-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.color-option {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.color-option:hover {
+    transform: scale(1.15);
+}
+
+.color-option.selected {
+    border-color: #fff;
+    box-shadow: 0 0 0 3px #e91e63, 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 /* Bouton Reset */
 .reset-btn {
     position: absolute;
@@ -1212,6 +1282,64 @@ body {
 
 .bg-icon {
     font-size: 1.2em;
+}
+
+/* Bouton Décors */
+.decor-btn {
+    position: absolute;
+    bottom: 220px;
+    left: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #64b5f6, #1976d2);
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.4);
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.decor-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(25, 118, 210, 0.6);
+}
+
+.decor-btn:active {
+    transform: scale(0.95);
+}
+
+.decor-icon {
+    font-size: 1.2em;
+}
+
+/* Items de décor d'arrière-plan */
+.decor-bg-item {
+    position: fixed;
+    cursor: grab;
+    z-index: 5;
+    user-select: none;
+    transition: transform 0.2s ease;
+}
+
+.decor-bg-item:hover {
+    filter: brightness(1.1);
+}
+
+.decor-bg-item.dragging {
+    cursor: grabbing;
+    z-index: 6;
+    filter: brightness(1.2);
+}
+
+.decor-bg-item .decor-bg-emoji {
+    font-size: 80px;
+    filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
 }
 
 /* Contenu Déco */

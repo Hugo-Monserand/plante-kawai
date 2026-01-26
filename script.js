@@ -202,6 +202,67 @@ const decoItemsData = [
 // Items de déco placés sur la map
 let placedDecoItems = [];
 
+// === Système de Décors d'arrière-plan ===
+const decorBgItemsData = [
+    { id: 'decor_castle', name: 'Château', emoji: '🏰', price: 10000 },
+    { id: 'decor_house', name: 'Maison', emoji: '🏠', price: 5000 },
+    { id: 'decor_cabin', name: 'Chalet', emoji: '🏡', price: 6000 },
+    { id: 'decor_temple', name: 'Temple', emoji: '⛩️', price: 15000 },
+    { id: 'decor_church', name: 'Église', emoji: '⛪', price: 12000 },
+    { id: 'decor_tower', name: 'Tour', emoji: '🗼', price: 20000 },
+    { id: 'decor_windmill', name: 'Moulin', emoji: '🏗️', price: 8000 },
+    { id: 'decor_tent', name: 'Tente', emoji: '⛺', price: 3000 },
+    { id: 'decor_fountain', name: 'Fontaine', emoji: '⛲', price: 7000 },
+    { id: 'decor_statue', name: 'Statue', emoji: '🗿', price: 9000 },
+    { id: 'decor_bridge', name: 'Pont', emoji: '🌉', price: 11000 },
+    { id: 'decor_ferris', name: 'Grande Roue', emoji: '🎡', price: 25000 },
+    { id: 'decor_carousel', name: 'Carrousel', emoji: '🎠', price: 18000 },
+    { id: 'decor_circus', name: 'Cirque', emoji: '🎪', price: 22000 },
+    { id: 'decor_rocket', name: 'Fusée', emoji: '🚀', price: 50000 },
+    { id: 'decor_ufo', name: 'OVNI', emoji: '🛸', price: 75000 }
+];
+
+// Décors placés sur la map (arrière-plan)
+let placedDecorBgItems = [];
+
+// === Système de Couleurs Nature ===
+const groundColorsData = [
+    { id: 'ground_green', name: 'Vert', colors: ['#81c784', '#66bb6a', '#4caf50'] },
+    { id: 'ground_dark', name: 'Vert Foncé', colors: ['#558b2f', '#33691e', '#1b5e20'] },
+    { id: 'ground_lime', name: 'Lime', colors: ['#c5e1a5', '#aed581', '#9ccc65'] },
+    { id: 'ground_teal', name: 'Turquoise', colors: ['#80cbc4', '#4db6ac', '#26a69a'] },
+    { id: 'ground_brown', name: 'Terre', colors: ['#a1887f', '#8d6e63', '#795548'] },
+    { id: 'ground_sand', name: 'Sable', colors: ['#ffe082', '#ffd54f', '#ffca28'] },
+    { id: 'ground_snow', name: 'Neige', colors: ['#ffffff', '#eceff1', '#cfd8dc'] },
+    { id: 'ground_purple', name: 'Violet', colors: ['#ce93d8', '#ba68c8', '#ab47bc'] }
+];
+
+const treeColorsData = [
+    { id: 'tree_pink', name: 'Rose', colors: ['#ff8a9a', '#ffaab8'] },
+    { id: 'tree_white', name: 'Blanc', colors: ['#ffffff', '#f5f5f5'] },
+    { id: 'tree_red', name: 'Rouge', colors: ['#ef5350', '#e57373'] },
+    { id: 'tree_orange', name: 'Orange', colors: ['#ff7043', '#ff8a65'] },
+    { id: 'tree_yellow', name: 'Jaune', colors: ['#ffd54f', '#ffe082'] },
+    { id: 'tree_green', name: 'Vert', colors: ['#81c784', '#a5d6a7'] },
+    { id: 'tree_blue', name: 'Bleu', colors: ['#64b5f6', '#90caf9'] },
+    { id: 'tree_purple', name: 'Violet', colors: ['#ba68c8', '#ce93d8'] }
+];
+
+const mountainColorsData = [
+    { id: 'mountain_green', name: 'Vert', colors: ['#7cb342', '#8bc34a', '#9ccc65'] },
+    { id: 'mountain_blue', name: 'Bleu', colors: ['#5c6bc0', '#7986cb', '#9fa8da'] },
+    { id: 'mountain_purple', name: 'Violet', colors: ['#7e57c2', '#9575cd', '#b39ddb'] },
+    { id: 'mountain_brown', name: 'Marron', colors: ['#6d4c41', '#8d6e63', '#a1887f'] },
+    { id: 'mountain_gray', name: 'Gris', colors: ['#546e7a', '#78909c', '#90a4ae'] },
+    { id: 'mountain_pink', name: 'Rose', colors: ['#ec407a', '#f06292', '#f48fb1'] },
+    { id: 'mountain_teal', name: 'Turquoise', colors: ['#00897b', '#26a69a', '#4db6ac'] },
+    { id: 'mountain_snow', name: 'Neige', colors: ['#b0bec5', '#cfd8dc', '#eceff1'] }
+];
+
+let selectedGroundColor = 'ground_green';
+let selectedTreeColor = 'tree_pink';
+let selectedMountainColor = 'mountain_green';
+
 // === Système d'arrière-plans ===
 const backgroundsData = [
     {
@@ -314,6 +375,21 @@ const bgClose = document.getElementById('bgClose');
 const bgBalance = document.getElementById('bgBalance');
 const bgItemsContainer = document.getElementById('bgItems');
 const backgroundEl = document.querySelector('.background');
+
+// Éléments DOM décors
+const decorBtn = document.getElementById('decorBtn');
+const decorModal = document.getElementById('decorModal');
+const decorClose = document.getElementById('decorClose');
+const decorBalance = document.getElementById('decorBalance');
+const decorItemsContainer = document.getElementById('decorItems');
+
+// Éléments DOM couleurs nature
+const natureColorBtn = document.getElementById('natureColorBtn');
+const natureColorModal = document.getElementById('natureColorModal');
+const natureColorClose = document.getElementById('natureColorClose');
+const groundColorsContainer = document.getElementById('groundColors');
+const treeColorsContainer = document.getElementById('treeColors');
+const mountainColorsContainer = document.getElementById('mountainColors');
 
 function createFlower(className, size = 70) {
     const flower = document.createElement('div');
@@ -717,7 +793,11 @@ function saveGame() {
         ownedSeeds: ownedSeeds,
         placedDecoItems: placedDecoItems,
         ownedBackgrounds: ownedBackgrounds,
-        equippedBackground: equippedBackground
+        equippedBackground: equippedBackground,
+        placedDecorBgItems: placedDecorBgItems,
+        selectedGroundColor: selectedGroundColor,
+        selectedTreeColor: selectedTreeColor,
+        selectedMountainColor: selectedMountainColor
     };
     localStorage.setItem('kawaiPlantSave', JSON.stringify(saveData));
 }
@@ -737,6 +817,10 @@ function loadGame() {
         placedDecoItems = data.placedDecoItems || [];
         ownedBackgrounds = data.ownedBackgrounds || ['bg_default'];
         equippedBackground = data.equippedBackground || 'bg_default';
+        placedDecorBgItems = data.placedDecorBgItems || [];
+        selectedGroundColor = data.selectedGroundColor || 'ground_green';
+        selectedTreeColor = data.selectedTreeColor || 'tree_pink';
+        selectedMountainColor = data.selectedMountainColor || 'mountain_green';
 
         // Réappliquer les items équipés
         if (equippedPot) {
@@ -1286,7 +1370,8 @@ function renderDecoItems() {
         itemEl.style.top = item.y + 'px';
 
         const size = item.size || 1;
-        itemEl.style.transform = `scale(${size})`;
+        const rotation = item.rotation || 0;
+        itemEl.style.transform = `scale(${size}) rotate(${rotation}deg)`;
 
         itemEl.innerHTML = `<span class="deco-emoji">${item.emoji}</span>`;
 
@@ -1356,6 +1441,37 @@ function showDecoContextMenu(x, y, itemIndex) {
     menu.style.top = y + 'px';
 
     const currentSize = placedDecoItems[itemIndex].size || 1;
+    const currentRotation = placedDecoItems[itemIndex].rotation || 0;
+
+    // Option tourner droite
+    const rotateRightOption = document.createElement('div');
+    rotateRightOption.className = 'pot-menu-item';
+    rotateRightOption.innerHTML = '↻ Tourner 90° →';
+    rotateRightOption.onclick = () => {
+        placedDecoItems[itemIndex].rotation = (currentRotation + 90) % 360;
+        saveGame();
+        renderDecoItems();
+        menu.remove();
+    };
+    menu.appendChild(rotateRightOption);
+
+    // Option tourner gauche
+    const rotateLeftOption = document.createElement('div');
+    rotateLeftOption.className = 'pot-menu-item';
+    rotateLeftOption.innerHTML = '↺ Tourner 90° ←';
+    rotateLeftOption.onclick = () => {
+        placedDecoItems[itemIndex].rotation = (currentRotation - 90 + 360) % 360;
+        saveGame();
+        renderDecoItems();
+        menu.remove();
+    };
+    menu.appendChild(rotateLeftOption);
+
+    // Séparateur rotation/taille
+    const separatorRotation = document.createElement('div');
+    separatorRotation.style.borderTop = '1px dashed #ccc';
+    separatorRotation.style.margin = '5px 0';
+    menu.appendChild(separatorRotation);
 
     // Option agrandir
     const biggerOption = document.createElement('div');
@@ -1529,6 +1645,396 @@ bgModal.addEventListener('click', (e) => {
     }
 });
 
+// === Fonctions Décors d'arrière-plan ===
+
+function openDecor(e) {
+    e.stopPropagation();
+    decorModal.classList.add('active');
+    renderDecorShop();
+}
+
+function closeDecor(e) {
+    if (e) e.stopPropagation();
+    decorModal.classList.remove('active');
+}
+
+function renderDecorShop() {
+    decorBalance.textContent = Math.floor(kawaiMoney);
+    decorItemsContainer.innerHTML = '';
+
+    decorBgItemsData.forEach(item => {
+        const canAfford = kawaiMoney >= item.price;
+
+        const itemEl = document.createElement('div');
+        itemEl.className = 'shop-item' + (!canAfford ? ' locked' : '');
+
+        itemEl.innerHTML = `
+            <div class="item-icon">${item.emoji}</div>
+            <div class="item-info">
+                <div class="item-name">${item.name}</div>
+                <div class="item-desc">Décor d'arrière-plan</div>
+            </div>
+            <button class="item-price" ${!canAfford ? 'disabled' : ''}>
+                ✿ ${item.price}
+            </button>
+        `;
+
+        if (canAfford) {
+            itemEl.querySelector('button').onclick = (e) => {
+                e.stopPropagation();
+                buyDecorBgItem(item);
+            };
+        }
+
+        decorItemsContainer.appendChild(itemEl);
+    });
+}
+
+function buyDecorBgItem(item) {
+    if (kawaiMoney < item.price) return;
+
+    kawaiMoney -= item.price;
+
+    const newItem = {
+        id: item.id + '_' + Date.now(),
+        type: item.id,
+        emoji: item.emoji,
+        x: window.innerWidth / 2 - 40,
+        y: window.innerHeight * 0.4,
+        size: 1,
+        rotation: 0
+    };
+
+    placedDecorBgItems.push(newItem);
+
+    updateMoneyDisplay();
+    renderDecorShop();
+    renderDecorBgItems();
+    saveGame();
+}
+
+function renderDecorBgItems() {
+    document.querySelectorAll('.decor-bg-item').forEach(el => el.remove());
+
+    placedDecorBgItems.forEach((item, index) => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'decor-bg-item';
+        itemEl.dataset.index = index;
+        itemEl.style.left = item.x + 'px';
+        itemEl.style.top = item.y + 'px';
+
+        const size = item.size || 1;
+        const rotation = item.rotation || 0;
+        itemEl.style.transform = `scale(${size}) rotate(${rotation}deg)`;
+
+        itemEl.innerHTML = `<span class="decor-bg-emoji">${item.emoji}</span>`;
+
+        makeDecorBgDraggable(itemEl, index);
+
+        itemEl.oncontextmenu = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            showDecorBgContextMenu(e.clientX, e.clientY, index);
+        };
+
+        document.body.appendChild(itemEl);
+    });
+}
+
+function makeDecorBgDraggable(element, itemIndex) {
+    let offsetX = 0;
+    let offsetY = 0;
+
+    element.onmousedown = function(e) {
+        if (e.button !== 0) return;
+        e.preventDefault();
+
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+
+        element.classList.add('dragging');
+
+        document.onmousemove = function(e) {
+            e.preventDefault();
+
+            let newX = e.clientX - offsetX;
+            let newY = e.clientY - offsetY;
+
+            newX = Math.max(0, Math.min(newX, window.innerWidth - 80));
+            newY = Math.max(0, Math.min(newY, window.innerHeight - 80));
+
+            element.style.left = newX + 'px';
+            element.style.top = newY + 'px';
+        };
+
+        document.onmouseup = function() {
+            element.classList.remove('dragging');
+
+            placedDecorBgItems[itemIndex].x = parseInt(element.style.left) || 0;
+            placedDecorBgItems[itemIndex].y = parseInt(element.style.top) || 0;
+            saveGame();
+
+            document.onmousemove = null;
+            document.onmouseup = null;
+        };
+    };
+}
+
+function showDecorBgContextMenu(x, y, itemIndex) {
+    const oldMenu = document.querySelector('.decor-bg-context-menu');
+    if (oldMenu) oldMenu.remove();
+
+    const menu = document.createElement('div');
+    menu.className = 'pot-context-menu decor-bg-context-menu';
+    menu.style.left = x + 'px';
+    menu.style.top = y + 'px';
+
+    const currentSize = placedDecorBgItems[itemIndex].size || 1;
+    const currentRotation = placedDecorBgItems[itemIndex].rotation || 0;
+
+    // Tourner droite
+    const rotateRightOption = document.createElement('div');
+    rotateRightOption.className = 'pot-menu-item';
+    rotateRightOption.innerHTML = '↻ Tourner 90° →';
+    rotateRightOption.onclick = () => {
+        placedDecorBgItems[itemIndex].rotation = (currentRotation + 90) % 360;
+        saveGame();
+        renderDecorBgItems();
+        menu.remove();
+    };
+    menu.appendChild(rotateRightOption);
+
+    // Tourner gauche
+    const rotateLeftOption = document.createElement('div');
+    rotateLeftOption.className = 'pot-menu-item';
+    rotateLeftOption.innerHTML = '↺ Tourner 90° ←';
+    rotateLeftOption.onclick = () => {
+        placedDecorBgItems[itemIndex].rotation = (currentRotation - 90 + 360) % 360;
+        saveGame();
+        renderDecorBgItems();
+        menu.remove();
+    };
+    menu.appendChild(rotateLeftOption);
+
+    // Séparateur
+    const sep1 = document.createElement('div');
+    sep1.style.borderTop = '1px dashed #ccc';
+    sep1.style.margin = '5px 0';
+    menu.appendChild(sep1);
+
+    // Agrandir
+    const biggerOption = document.createElement('div');
+    biggerOption.className = 'pot-menu-item';
+    biggerOption.innerHTML = '🔍+ Agrandir';
+    biggerOption.onclick = () => {
+        placedDecorBgItems[itemIndex].size = Math.min((currentSize + 0.25), 3);
+        saveGame();
+        renderDecorBgItems();
+        menu.remove();
+    };
+    menu.appendChild(biggerOption);
+
+    // Réduire
+    const smallerOption = document.createElement('div');
+    smallerOption.className = 'pot-menu-item';
+    smallerOption.innerHTML = '🔍- Réduire';
+    smallerOption.onclick = () => {
+        placedDecorBgItems[itemIndex].size = Math.max((currentSize - 0.25), 0.25);
+        saveGame();
+        renderDecorBgItems();
+        menu.remove();
+    };
+    menu.appendChild(smallerOption);
+
+    // Taille normale
+    const resetOption = document.createElement('div');
+    resetOption.className = 'pot-menu-item';
+    resetOption.innerHTML = '↺ Taille normale';
+    resetOption.onclick = () => {
+        placedDecorBgItems[itemIndex].size = 1;
+        placedDecorBgItems[itemIndex].rotation = 0;
+        saveGame();
+        renderDecorBgItems();
+        menu.remove();
+    };
+    menu.appendChild(resetOption);
+
+    // Séparateur
+    const sep2 = document.createElement('div');
+    sep2.style.borderTop = '1px dashed #ccc';
+    sep2.style.margin = '5px 0';
+    menu.appendChild(sep2);
+
+    // Supprimer
+    const deleteOption = document.createElement('div');
+    deleteOption.className = 'pot-menu-item';
+    deleteOption.innerHTML = '🗑️ Supprimer';
+    deleteOption.onclick = () => {
+        placedDecorBgItems.splice(itemIndex, 1);
+        saveGame();
+        renderDecorBgItems();
+        menu.remove();
+    };
+    menu.appendChild(deleteOption);
+
+    document.body.appendChild(menu);
+
+    setTimeout(() => {
+        document.addEventListener('click', function closeMenu() {
+            menu.remove();
+            document.removeEventListener('click', closeMenu);
+        });
+    }, 10);
+}
+
+// Event listeners décors
+decorBtn.addEventListener('click', openDecor);
+decorClose.addEventListener('click', closeDecor);
+decorModal.addEventListener('click', (e) => {
+    if (e.target === decorModal) {
+        closeDecor(e);
+    }
+});
+
+// === Fonctions Couleurs Nature ===
+
+function openNatureColor(e) {
+    e.stopPropagation();
+    natureColorModal.classList.add('active');
+    renderNatureColors();
+}
+
+function closeNatureColor(e) {
+    if (e) e.stopPropagation();
+    natureColorModal.classList.remove('active');
+}
+
+function renderNatureColors() {
+    // Couleurs du sol
+    groundColorsContainer.innerHTML = '';
+    groundColorsData.forEach(color => {
+        const colorEl = document.createElement('div');
+        colorEl.className = 'color-option' + (selectedGroundColor === color.id ? ' selected' : '');
+        colorEl.style.background = `linear-gradient(135deg, ${color.colors[0]}, ${color.colors[2]})`;
+        colorEl.title = color.name;
+        colorEl.onclick = (e) => {
+            e.stopPropagation();
+            selectGroundColor(color.id);
+        };
+        groundColorsContainer.appendChild(colorEl);
+    });
+
+    // Couleurs des arbres
+    treeColorsContainer.innerHTML = '';
+    treeColorsData.forEach(color => {
+        const colorEl = document.createElement('div');
+        colorEl.className = 'color-option' + (selectedTreeColor === color.id ? ' selected' : '');
+        colorEl.style.background = `linear-gradient(135deg, ${color.colors[0]}, ${color.colors[1]})`;
+        colorEl.title = color.name;
+        colorEl.onclick = (e) => {
+            e.stopPropagation();
+            selectTreeColor(color.id);
+        };
+        treeColorsContainer.appendChild(colorEl);
+    });
+
+    // Couleurs des montagnes
+    mountainColorsContainer.innerHTML = '';
+    mountainColorsData.forEach(color => {
+        const colorEl = document.createElement('div');
+        colorEl.className = 'color-option' + (selectedMountainColor === color.id ? ' selected' : '');
+        colorEl.style.background = `linear-gradient(135deg, ${color.colors[0]}, ${color.colors[2]})`;
+        colorEl.title = color.name;
+        colorEl.onclick = (e) => {
+            e.stopPropagation();
+            selectMountainColor(color.id);
+        };
+        mountainColorsContainer.appendChild(colorEl);
+    });
+}
+
+function selectGroundColor(colorId) {
+    selectedGroundColor = colorId;
+    applyGroundColor();
+    renderNatureColors();
+    saveGame();
+}
+
+function selectTreeColor(colorId) {
+    selectedTreeColor = colorId;
+    applyTreeColor();
+    renderNatureColors();
+    saveGame();
+}
+
+function selectMountainColor(colorId) {
+    selectedMountainColor = colorId;
+    applyMountainColor();
+    renderNatureColors();
+    saveGame();
+}
+
+function applyGroundColor() {
+    const colorData = groundColorsData.find(c => c.id === selectedGroundColor);
+    if (!colorData) return;
+
+    const ground = document.querySelector('.ground');
+    if (ground) {
+        ground.style.background = `linear-gradient(180deg, ${colorData.colors[0]} 0%, ${colorData.colors[1]} 50%, ${colorData.colors[2]} 100%)`;
+    }
+}
+
+function applyTreeColor() {
+    const colorData = treeColorsData.find(c => c.id === selectedTreeColor);
+    if (!colorData) return;
+
+    const treeTops = document.querySelectorAll('.tree-top');
+    treeTops.forEach(treeTop => {
+        treeTop.style.background = colorData.colors[0];
+    });
+
+    // Appliquer aussi au pseudo-élément via une classe CSS dynamique
+    const styleId = 'tree-color-style';
+    let styleEl = document.getElementById(styleId);
+    if (!styleEl) {
+        styleEl = document.createElement('style');
+        styleEl.id = styleId;
+        document.head.appendChild(styleEl);
+    }
+    styleEl.textContent = `
+        .tree-top::before {
+            background: ${colorData.colors[1]} !important;
+        }
+    `;
+}
+
+function applyMountainColor() {
+    const colorData = mountainColorsData.find(c => c.id === selectedMountainColor);
+    if (!colorData) return;
+
+    const mountains = document.querySelectorAll('.mountain');
+    mountains.forEach((mountain, index) => {
+        // Alterner les couleurs pour plus de variété
+        const colorIndex = index % colorData.colors.length;
+        mountain.style.borderBottomColor = colorData.colors[colorIndex];
+    });
+}
+
+function applyAllNatureColors() {
+    applyGroundColor();
+    applyTreeColor();
+    applyMountainColor();
+}
+
+// Event listeners couleurs nature
+natureColorBtn.addEventListener('click', openNatureColor);
+natureColorClose.addEventListener('click', closeNatureColor);
+natureColorModal.addEventListener('click', (e) => {
+    if (e.target === natureColorModal) {
+        closeNatureColor(e);
+    }
+});
+
 // === Système de Reset ===
 
 const resetBtn = document.getElementById('resetBtn');
@@ -1666,6 +2172,12 @@ renderSidePlants();
 
 // Afficher les décos
 renderDecoItems();
+
+// Afficher les décors d'arrière-plan
+renderDecorBgItems();
+
+// Appliquer les couleurs nature sauvegardées
+applyAllNatureColors();
 
 // Code secret
 const secretInput = document.getElementById('secretInput');
