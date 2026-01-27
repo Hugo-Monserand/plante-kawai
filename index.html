@@ -319,13 +319,77 @@
 
     <!-- Musique de fond -->
     <audio id="bgMusic" loop>
-        <source src="music.mp3" type="audio/mpeg">
+        <source src="assets/audio/music.mp3" type="audio/mpeg">
     </audio>
 
     <button class="music-btn" id="musicBtn">
         <span class="music-icon">🔇</span>
     </button>
 
-    <script src="script.js"></script>
+    <!-- Core -->
+    <script src="js/core/namespace.js"></script>
+    <script src="js/core/eventBus.js"></script>
+    <script src="js/core/state.js"></script>
+    <script src="js/core/dom.js"></script>
+    <script src="js/core/storage.js"></script>
+
+    <!-- Utils -->
+    <script src="js/utils/colorUtils.js"></script>
+    <script src="js/utils/domUtils.js"></script>
+
+    <!-- Config -->
+    <script src="js/config/constants.js"></script>
+    <script src="js/config/shopItems.js"></script>
+    <script src="js/config/gardenItems.js"></script>
+    <script src="js/config/decorations.js"></script>
+    <script src="js/config/backgrounds.js"></script>
+    <script src="js/config/colors.js"></script>
+    <script src="js/config/achievements.js"></script>
+
+    <!-- UI -->
+    <script src="js/ui/modalManager.js"></script>
+    <script src="js/ui/dragDrop.js"></script>
+    <script src="js/ui/contextMenu.js"></script>
+    <script src="js/ui/notifications.js"></script>
+    <script src="js/ui/musicPlayer.js"></script>
+
+    <!-- Features - Economy (doit être chargé en premier) -->
+    <script src="js/features/economy/costCalculator.js"></script>
+    <script src="js/features/economy/moneyController.js"></script>
+    <script src="js/features/economy/crystalController.js"></script>
+
+    <!-- Features - Plant -->
+    <script src="js/features/plant/plantRenderer.js"></script>
+    <script src="js/features/plant/wateringSystem.js"></script>
+    <script src="js/features/plant/plantController.js"></script>
+
+    <!-- Features - Shop -->
+    <script src="js/features/shop/shopRenderer.js"></script>
+    <script src="js/features/shop/shopController.js"></script>
+
+    <!-- Features - Garden -->
+    <script src="js/features/garden/gardenRenderer.js"></script>
+    <script src="js/features/garden/gardenController.js"></script>
+
+    <!-- Features - Decoration -->
+    <script src="js/features/decoration/decoController.js"></script>
+    <script src="js/features/decoration/decorBgController.js"></script>
+
+    <!-- Features - Background -->
+    <script src="js/features/background/bgController.js"></script>
+    <script src="js/features/background/natureColors.js"></script>
+
+    <!-- Features - Meteors -->
+    <script src="js/features/meteors/meteorController.js"></script>
+    <script src="js/features/meteors/funnelController.js"></script>
+
+    <!-- Features - Achievements -->
+    <script src="js/features/achievements/achievementController.js"></script>
+
+    <!-- Features - Secrets -->
+    <script src="js/features/secrets/secretCodes.js"></script>
+
+    <!-- App (point d'entrée) -->
+    <script src="js/app.js"></script>
 </body>
 </html>
