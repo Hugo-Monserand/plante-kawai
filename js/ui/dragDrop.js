@@ -17,15 +17,22 @@
          */
         make: function(element, options) {
             options = options || {};
-            var bounds = options.bounds || {
-                left: 0,
-                top: 0,
-                right: window.innerWidth,
-                bottom: window.innerHeight
-            };
             var handle = options.handle || element;
             var offsetX = 0;
             var offsetY = 0;
+
+            // Fonction pour obtenir les bounds (dynamiques ou statiques)
+            function getBounds() {
+                if (typeof options.bounds === 'function') {
+                    return options.bounds();
+                }
+                return options.bounds || {
+                    left: 0,
+                    top: 0,
+                    right: window.innerWidth,
+                    bottom: window.innerHeight
+                };
+            }
 
             handle.addEventListener('mousedown', function(e) {
                 if (e.button !== 0) return; // Seulement clic gauche
@@ -46,7 +53,8 @@
                     var newX = e.clientX - offsetX;
                     var newY = e.clientY - offsetY;
 
-                    // Appliquer les limites
+                    // Recalculer les limites à chaque mouvement
+                    var bounds = getBounds();
                     newX = Math.max(bounds.left, Math.min(newX, bounds.right - element.offsetWidth));
                     newY = Math.max(bounds.top, Math.min(newY, bounds.bottom - element.offsetHeight));
 
@@ -84,11 +92,13 @@
          */
         makePlantDraggable: function(element, slotIndex) {
             this.make(element, {
-                bounds: {
-                    left: 0,
-                    top: 0,
-                    right: window.innerWidth - 100,
-                    bottom: window.innerHeight - 150
+                bounds: function() {
+                    return {
+                        left: -50,
+                        top: 0,
+                        right: window.innerWidth + 50,
+                        bottom: window.innerHeight + 50
+                    };
                 },
                 onDragEnd: function(pos) {
                     KP.State.gardenSlots[slotIndex].position = pos;
