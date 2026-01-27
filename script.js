@@ -101,6 +101,14 @@ const shopItemsData = [
         price: 200,
         type: 'boost',
         duration: 30
+    },
+    {
+        id: 'funnel',
+        name: 'Entonnoir Magique',
+        desc: 'Collecte automatiquement les étoiles qui passent dessus !',
+        icon: '🔻',
+        price: 1000000,
+        type: 'funnel'
     }
 ];
 
@@ -219,7 +227,8 @@ const decorBgItemsData = [
     { id: 'decor_carousel', name: 'Carrousel', emoji: '🎠', price: 18000 },
     { id: 'decor_circus', name: 'Cirque', emoji: '🎪', price: 22000 },
     { id: 'decor_rocket', name: 'Fusée', emoji: '🚀', price: 50000 },
-    { id: 'decor_ufo', name: 'OVNI', emoji: '🛸', price: 75000 }
+    { id: 'decor_ufo', name: 'OVNI', emoji: '🛸', price: 75000 },
+    { id: 'decor_picnic', name: 'Aire de Pique-nique', emoji: '<img src="picnic.jpeg" class="decor-bg-img">', price: 50000, isImage: true }
 ];
 
 // Décors placés sur la map (arrière-plan)
@@ -265,6 +274,17 @@ let selectedMountainColor = 'mountain_green';
 
 // Visibilité des mini plantes
 let showSidePlants = true;
+
+// === Système de Météorites et Cristaux ===
+let crystals = 0;
+const crystalAmountDisplay = document.getElementById('crystalAmount');
+const meteorsContainer = document.getElementById('meteorsContainer');
+
+const meteorEmojis = ['☄️', '🌠', '💫', '⭐', '🔮'];
+
+// Entonnoir collecteur
+let hasFunnel = false;
+let funnelPosition = { x: window.innerWidth / 2 - 40, y: window.innerHeight - 250 };
 
 // === Système d'arrière-plans ===
 const backgroundsData = [
@@ -682,7 +702,13 @@ function buyItem(item) {
 
     kawaiMoney -= item.price;
 
-    if (item.type !== 'boost') {
+    if (item.type === 'boost') {
+        applyItem(item);
+    } else if (item.type === 'funnel') {
+        hasFunnel = true;
+        ownedItems.push(item.id);
+        renderFunnel();
+    } else {
         ownedItems.push(item.id);
 
         // Si c'est un pot, augmenter le niveau max de 10
@@ -693,8 +719,6 @@ function buyItem(item) {
 
         // Équiper automatiquement à l'achat
         equipItem(item);
-    } else {
-        applyItem(item);
     }
 
     updateMoneyDisplay();
@@ -801,7 +825,10 @@ function saveGame() {
         selectedGroundColor: selectedGroundColor,
         selectedTreeColor: selectedTreeColor,
         selectedMountainColor: selectedMountainColor,
-        showSidePlants: showSidePlants
+        showSidePlants: showSidePlants,
+        crystals: crystals,
+        hasFunnel: hasFunnel,
+        funnelPosition: funnelPosition
     };
     localStorage.setItem('kawaiPlantSave', JSON.stringify(saveData));
 }
@@ -826,6 +853,9 @@ function loadGame() {
         selectedTreeColor = data.selectedTreeColor || 'tree_pink';
         selectedMountainColor = data.selectedMountainColor || 'mountain_green';
         showSidePlants = data.showSidePlants !== undefined ? data.showSidePlants : true;
+        crystals = data.crystals || 0;
+        hasFunnel = data.hasFunnel || false;
+        funnelPosition = data.funnelPosition || { x: window.innerWidth / 2 - 40, y: window.innerHeight - 250 };
 
         // Réappliquer les items équipés
         if (equippedPot) {
@@ -2078,6 +2108,336 @@ natureColorModal.addEventListener('click', (e) => {
     }
 });
 
+// === Fonctions Météorites ===
+
+function updateCrystalDisplay() {
+    crystalAmountDisplay.textContent = crystals;
+}
+
+function spawnMeteor() {
+    const meteor = document.createElement('div');
+    meteor.className = 'meteor';
+
+    // Emoji aléatoire
+    const emoji = meteorEmojis[Math.floor(Math.random() * meteorEmojis.length)];
+    meteor.textContent = emoji;
+
+    // Position horizontale aléatoire
+    const startX = Math.random() * (window.innerWidth - 50);
+    meteor.style.left = startX + 'px';
+    meteor.style.top = '-50px';
+
+    // Durée de chute aléatoire (3-7 secondes)
+    const fallDuration = 3 + Math.random() * 4;
+    meteor.style.animationDuration = `${fallDuration}s, 0.3s`;
+
+    // Valeur en cristaux (1-3)
+    const value = Math.floor(Math.random() * 3) + 1;
+    meteor.dataset.value = value;
+
+    // Clic pour collecter
+    meteor.onclick = (e) => {
+        e.stopPropagation();
+        collectMeteor(meteor, value);
+    };
+
+    meteorsContainer.appendChild(meteor);
+
+    // Supprimer après l'animation
+    setTimeout(() => {
+        if (meteor.parentNode) {
+            meteor.remove();
+        }
+    }, fallDuration * 1000);
+}
+
+function collectMeteor(meteor, value) {
+    if (meteor.classList.contains('collected')) return;
+
+    meteor.classList.add('collected');
+
+    // Ajouter les cristaux
+    crystals += value;
+    updateCrystalDisplay();
+    saveGame();
+
+    // Animation popup +X
+    const popup = document.createElement('div');
+    popup.className = 'crystal-popup';
+    popup.textContent = `+${value} 💎`;
+    popup.style.left = meteor.style.left;
+    popup.style.top = meteor.getBoundingClientRect().top + 'px';
+    document.body.appendChild(popup);
+
+    setTimeout(() => {
+        popup.remove();
+    }, 1000);
+
+    // Supprimer la météorite après l'animation
+    setTimeout(() => {
+        meteor.remove();
+    }, 400);
+}
+
+// Spawner des météorites régulièrement (toutes les 15-30 secondes)
+function scheduleMeteorSpawn() {
+    const delay = 15000 + Math.random() * 15000;
+    setTimeout(() => {
+        spawnMeteor();
+        scheduleMeteorSpawn();
+    }, delay);
+}
+
+// Démarrer le spawn des météorites
+scheduleMeteorSpawn();
+// Spawner une première météorite après 10 secondes
+setTimeout(spawnMeteor, 10000);
+
+// === Fonctions Entonnoir ===
+
+function renderFunnel() {
+    // Supprimer l'ancien entonnoir s'il existe
+    const oldFunnel = document.getElementById('magicFunnel');
+    if (oldFunnel) oldFunnel.remove();
+
+    if (!hasFunnel) return;
+
+    const funnel = document.createElement('div');
+    funnel.id = 'magicFunnel';
+    funnel.className = 'magic-funnel';
+    funnel.style.left = funnelPosition.x + 'px';
+    funnel.style.top = funnelPosition.y + 'px';
+    funnel.innerHTML = `
+        <div class="funnel-top">🔻</div>
+        <div class="funnel-glow"></div>
+    `;
+
+    // Drag and drop
+    makeFunnelDraggable(funnel);
+
+    document.body.appendChild(funnel);
+}
+
+function makeFunnelDraggable(element) {
+    let offsetX = 0;
+    let offsetY = 0;
+
+    element.onmousedown = function(e) {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+
+        element.classList.add('dragging');
+
+        document.onmousemove = function(e) {
+            e.preventDefault();
+
+            let newX = e.clientX - offsetX;
+            let newY = e.clientY - offsetY;
+
+            newX = Math.max(0, Math.min(newX, window.innerWidth - 80));
+            newY = Math.max(0, Math.min(newY, window.innerHeight - 100));
+
+            element.style.left = newX + 'px';
+            element.style.top = newY + 'px';
+        };
+
+        document.onmouseup = function() {
+            element.classList.remove('dragging');
+
+            funnelPosition.x = parseInt(element.style.left) || 0;
+            funnelPosition.y = parseInt(element.style.top) || 0;
+            saveGame();
+
+            document.onmousemove = null;
+            document.onmouseup = null;
+        };
+    };
+}
+
+// Vérifier si une météorite touche l'entonnoir
+function checkFunnelCollision(meteor) {
+    if (!hasFunnel) return false;
+
+    const funnel = document.getElementById('magicFunnel');
+    if (!funnel) return false;
+
+    const meteorRect = meteor.getBoundingClientRect();
+    const funnelRect = funnel.getBoundingClientRect();
+
+    // Zone de détection élargie pour l'entonnoir
+    const funnelZone = {
+        left: funnelRect.left - 20,
+        right: funnelRect.right + 20,
+        top: funnelRect.top - 30,
+        bottom: funnelRect.bottom
+    };
+
+    const meteorCenter = {
+        x: meteorRect.left + meteorRect.width / 2,
+        y: meteorRect.top + meteorRect.height / 2
+    };
+
+    return meteorCenter.x >= funnelZone.left &&
+           meteorCenter.x <= funnelZone.right &&
+           meteorCenter.y >= funnelZone.top &&
+           meteorCenter.y <= funnelZone.bottom;
+}
+
+// Vérifier les collisions régulièrement
+function checkAllMeteorCollisions() {
+    if (!hasFunnel) return;
+
+    const meteors = document.querySelectorAll('.meteor:not(.collected)');
+    meteors.forEach(meteor => {
+        if (checkFunnelCollision(meteor)) {
+            const value = parseInt(meteor.dataset.value) || 1;
+            collectMeteorByFunnel(meteor, value);
+        }
+    });
+}
+
+function collectMeteorByFunnel(meteor, value) {
+    if (meteor.classList.contains('collected')) return;
+
+    meteor.classList.add('collected');
+
+    // Ajouter les cristaux
+    crystals += value;
+    updateCrystalDisplay();
+    saveGame();
+
+    // Animation spéciale pour l'entonnoir
+    const funnel = document.getElementById('magicFunnel');
+    if (funnel) {
+        funnel.classList.add('collecting');
+        setTimeout(() => funnel.classList.remove('collecting'), 300);
+    }
+
+    // Animation popup
+    const popup = document.createElement('div');
+    popup.className = 'crystal-popup';
+    popup.textContent = `+${value} 💎`;
+    popup.style.left = funnelPosition.x + 40 + 'px';
+    popup.style.top = funnelPosition.y + 'px';
+    document.body.appendChild(popup);
+
+    setTimeout(() => popup.remove(), 1000);
+    setTimeout(() => meteor.remove(), 400);
+}
+
+// Vérifier les collisions toutes les 100ms
+setInterval(checkAllMeteorCollisions, 100);
+
+// === Couper la plante principale ===
+
+const mainPlantContainer = document.querySelector('.main-plant');
+
+// Clic droit sur le conteneur principal (toujours accessible)
+mainPlantContainer.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (growthLevel < maxLevel) {
+        // Message si pas au niveau max
+        const popup = document.createElement('div');
+        popup.className = 'crystal-popup';
+        popup.textContent = `Niveau ${maxLevel} requis !`;
+        popup.style.left = e.clientX + 'px';
+        popup.style.top = e.clientY + 'px';
+        popup.style.color = '#ff5252';
+        document.body.appendChild(popup);
+        setTimeout(() => popup.remove(), 1000);
+        return;
+    }
+
+    showHarvestMenu(e.clientX, e.clientY);
+});
+
+function getHarvestReward() {
+    // Récompense fixe de 10 diamants quand niveau max
+    return 10;
+}
+
+function showHarvestMenu(x, y) {
+    // Supprimer l'ancien menu s'il existe
+    const oldMenu = document.querySelector('.harvest-menu');
+    if (oldMenu) oldMenu.remove();
+
+    const reward = getHarvestReward();
+
+    const menu = document.createElement('div');
+    menu.className = 'pot-context-menu harvest-menu';
+    menu.style.left = x + 'px';
+    menu.style.top = y + 'px';
+
+    const harvestOption = document.createElement('div');
+    harvestOption.className = 'pot-menu-item';
+    harvestOption.innerHTML = `✂️ Couper la plante (+${reward} 💎)`;
+    harvestOption.onclick = () => {
+        harvestMainPlant();
+        menu.remove();
+    };
+    menu.appendChild(harvestOption);
+
+    const cancelOption = document.createElement('div');
+    cancelOption.className = 'pot-menu-item';
+    cancelOption.innerHTML = '❌ Annuler';
+    cancelOption.onclick = () => {
+        menu.remove();
+    };
+    menu.appendChild(cancelOption);
+
+    document.body.appendChild(menu);
+
+    setTimeout(() => {
+        document.addEventListener('click', function closeMenu() {
+            menu.remove();
+            document.removeEventListener('click', closeMenu);
+        });
+    }, 10);
+}
+
+function harvestMainPlant() {
+    if (growthLevel === 0) return;
+
+    const reward = getHarvestReward();
+
+    // Animation de coupe
+    const plant = document.getElementById('plant');
+    plant.classList.add('harvesting');
+
+    setTimeout(() => {
+        // Réinitialiser le niveau
+        growthLevel = 0;
+
+        // Donner les cristaux selon le niveau
+        crystals += reward;
+        updateCrystalDisplay();
+
+        // Mettre à jour la plante
+        updatePlant();
+        updateMoneyDisplay();
+        saveGame();
+
+        plant.classList.remove('harvesting');
+
+        // Animation popup
+        const popup = document.createElement('div');
+        popup.className = 'crystal-popup';
+        popup.textContent = `+${reward} 💎`;
+        popup.style.left = '50%';
+        popup.style.top = '40%';
+        popup.style.transform = 'translateX(-50%)';
+        document.body.appendChild(popup);
+
+        setTimeout(() => popup.remove(), 1000);
+    }, 300);
+}
+
 // === Système de Reset ===
 
 const resetBtn = document.getElementById('resetBtn');
@@ -2221,6 +2581,12 @@ renderDecorBgItems();
 
 // Appliquer les couleurs nature sauvegardées
 applyAllNatureColors();
+
+// Afficher les cristaux
+updateCrystalDisplay();
+
+// Afficher l'entonnoir si acheté
+renderFunnel();
 
 // Code secret
 const secretInput = document.getElementById('secretInput');

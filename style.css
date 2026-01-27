@@ -29,6 +29,7 @@ body {
     border-right: 150px solid transparent;
     border-bottom: 200px solid #7cb342;
     opacity: 0.6;
+    z-index: 2;
 }
 
 .mountain::before {
@@ -52,6 +53,7 @@ body {
 .tree {
     position: absolute;
     bottom: 15%;
+    z-index: 2;
 }
 
 .tree-trunk {
@@ -92,6 +94,7 @@ body {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 50px;
     animation: float 6s ease-in-out infinite;
+    z-index: 2;
 }
 
 .cloud::before, .cloud::after {
@@ -129,6 +132,7 @@ body {
     height: 20%;
     background: linear-gradient(180deg, #81c784 0%, #66bb6a 50%, #4caf50 100%);
     border-radius: 100% 100% 0 0 / 30px 30px 0 0;
+    z-index: 2;
 }
 
 /* Conteneur de toutes les plantes */
@@ -701,6 +705,213 @@ body {
 .money-rate {
     font-size: 0.8em;
     color: #4caf50;
+}
+
+/* Affichage des cristaux */
+.crystal-display {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 18px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: #7c4dff;
+}
+
+.crystal-icon {
+    font-size: 1.3em;
+    animation: crystalGlow 2s ease-in-out infinite;
+}
+
+@keyframes crystalGlow {
+    0%, 100% { filter: drop-shadow(0 0 3px #7c4dff); }
+    50% { filter: drop-shadow(0 0 10px #7c4dff); }
+}
+
+.crystal-amount {
+    font-size: 1.2em;
+    min-width: 30px;
+}
+
+/* Conteneur des météorites */
+.meteors-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Météorite */
+.meteor {
+    position: absolute;
+    cursor: pointer;
+    pointer-events: auto;
+    font-size: 35px;
+    filter: drop-shadow(0 0 10px #ff6b6b) drop-shadow(0 0 20px #ff9800);
+    animation: meteorFall linear forwards, meteorGlow 0.3s ease-in-out infinite alternate;
+    transition: transform 0.1s ease;
+    z-index: 1;
+}
+
+.meteor:hover {
+    transform: scale(1.3);
+    filter: drop-shadow(0 0 15px #ffeb3b) drop-shadow(0 0 30px #ff9800);
+}
+
+.meteor.collected {
+    animation: meteorCollect 0.4s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes meteorFall {
+    0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(calc(100vh + 50px)) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes meteorGlow {
+    0% { filter: drop-shadow(0 0 8px #ff6b6b) drop-shadow(0 0 15px #ff9800); }
+    100% { filter: drop-shadow(0 0 15px #ffeb3b) drop-shadow(0 0 25px #ff9800); }
+}
+
+@keyframes meteorCollect {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.8);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+/* Animation de collecte +1 */
+.crystal-popup {
+    position: fixed;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #7c4dff;
+    pointer-events: none;
+    z-index: 1000;
+    animation: popupFloat 1s ease-out forwards;
+    text-shadow: 0 0 10px #b388ff;
+}
+
+@keyframes popupFloat {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-60px) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Entonnoir magique */
+.magic-funnel {
+    position: fixed;
+    cursor: grab;
+    z-index: 50;
+    user-select: none;
+    transition: transform 0.2s ease;
+}
+
+.magic-funnel:hover {
+    transform: scale(1.1);
+}
+
+.magic-funnel.dragging {
+    cursor: grabbing;
+    z-index: 1000;
+    transform: scale(1.15);
+}
+
+.magic-funnel .funnel-top {
+    font-size: 80px;
+    filter: drop-shadow(0 0 15px #7c4dff) drop-shadow(0 0 30px #b388ff);
+    animation: funnelPulse 2s ease-in-out infinite;
+}
+
+.magic-funnel .funnel-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(124, 77, 255, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+.magic-funnel.collecting .funnel-top {
+    animation: funnelCollect 0.3s ease-out;
+}
+
+@keyframes funnelPulse {
+    0%, 100% { filter: drop-shadow(0 0 15px #7c4dff) drop-shadow(0 0 30px #b388ff); }
+    50% { filter: drop-shadow(0 0 25px #7c4dff) drop-shadow(0 0 50px #b388ff); }
+}
+
+@keyframes glowPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.8; }
+}
+
+@keyframes funnelCollect {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); filter: drop-shadow(0 0 30px #ffeb3b) drop-shadow(0 0 50px #ff9800); }
+    100% { transform: scale(1); }
+}
+
+/* Animation de récolte de la plante */
+.plant.harvesting {
+    animation: harvestShake 0.3s ease-out;
+}
+
+@keyframes harvestShake {
+    0% { transform: translateX(-50%) rotate(0deg); }
+    25% { transform: translateX(-50%) rotate(-5deg); }
+    50% { transform: translateX(-50%) rotate(5deg); }
+    75% { transform: translateX(-50%) rotate(-3deg); }
+    100% { transform: translateX(-50%) rotate(0deg) scale(0); }
+}
+
+/* Curseur sur la plante principale */
+.main-plant {
+    cursor: pointer;
+}
+
+.main-plant:hover .plant,
+.main-plant:hover .pot {
+    filter: brightness(1.1);
 }
 
 /* Code secret */
@@ -1342,6 +1553,17 @@ body {
     filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
 }
 
+.decor-bg-item .decor-bg-img,
+.decor-bg-item img {
+    width: 150px;
+    height: auto;
+}
+
+.item-icon .decor-bg-img {
+    width: 50px;
+    height: auto;
+}
+
 /* Contenu Déco */
 .deco-content {
     max-width: 500px;
@@ -1374,6 +1596,7 @@ body {
 .deco-item .deco-img {
     width: 150px;
     height: auto;
+    mix-blend-mode: multiply;
 }
 
 .item-icon .deco-img {
