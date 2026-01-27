@@ -26,7 +26,27 @@
         { id: 'deco_crystal', name: 'Cristal', emoji: '💎', price: 7500 },
         { id: 'deco_ribbon', name: 'Ruban', emoji: '🎀', price: 800 },
         { id: 'deco_balloon', name: 'Ballon', emoji: '🎈', price: 600 },
-        { id: 'deco_gift', name: 'Cadeau', emoji: '🎁', price: 2000 }
+        { id: 'deco_gift', name: 'Cadeau', emoji: '🎁', price: 2000 },
+        // Objets bleus
+        { id: 'deco_droplet', name: 'Goutte d\'eau', emoji: '💧', price: 600 },
+        { id: 'deco_dolphin', name: 'Dauphin', emoji: '🐬', price: 2500 },
+        { id: 'deco_fish', name: 'Poisson', emoji: '🐟', price: 1000 },
+        { id: 'deco_wave', name: 'Vague', emoji: '🌊', price: 1800 },
+        { id: 'deco_snowflake', name: 'Flocon', emoji: '❄️', price: 1200 },
+        { id: 'deco_bluediamond', name: 'Diamant bleu', emoji: '💠', price: 4000 },
+        { id: 'deco_whale', name: 'Baleine', emoji: '🐋', price: 3500 },
+        { id: 'deco_shell', name: 'Coquillage', emoji: '🐚', price: 900 },
+        // Objets verts
+        { id: 'deco_frog', name: 'Grenouille', emoji: '🐸', price: 1500 },
+        { id: 'deco_turtle', name: 'Tortue', emoji: '🐢', price: 2000 },
+        { id: 'deco_cactus', name: 'Cactus', emoji: '🌵', price: 1800 },
+        { id: 'deco_leaf', name: 'Feuille', emoji: '🍃', price: 500 },
+        { id: 'deco_herb', name: 'Herbe', emoji: '🌿', price: 600 },
+        { id: 'deco_tree', name: 'Sapin', emoji: '🌲', price: 2200 },
+        { id: 'deco_crocodile', name: 'Crocodile', emoji: '🐊', price: 3000 },
+        { id: 'deco_cucumber', name: 'Concombre', emoji: '🥒', price: 800 },
+        { id: 'deco_avocado', name: 'Avocat', emoji: '🥑', price: 1100 },
+        { id: 'deco_dinosaur', name: 'Dinosaure', emoji: '🦖', price: 5000 }
     ];
 
     // Décors d'arrière-plan (grands objets)
@@ -47,6 +67,16 @@
         { id: 'decor_circus', name: 'Cirque', emoji: '🎪', price: 22000 },
         { id: 'decor_rocket', name: 'Fusée', emoji: '🚀', price: 50000 },
         { id: 'decor_ufo', name: 'OVNI', emoji: '🛸', price: 75000 },
-        { id: 'decor_picnic', name: 'Aire de Pique-nique', emoji: '<img src="assets/images/picnic.jpeg" class="decor-bg-img">', price: 50000, isImage: true }
+        { id: 'decor_picnic', name: 'Aire de Pique-nique', emoji: '<img src="assets/images/picnic.jpeg" class="decor-bg-img">', price: 50000, isImage: true },
+        // Décors bleus
+        { id: 'decor_aquarium', name: 'Aquarium', emoji: '🐠', price: 15000 },
+        { id: 'decor_igloo', name: 'Igloo', emoji: '🏠', price: 12000 },
+        { id: 'decor_sailboat', name: 'Voilier', emoji: '⛵', price: 18000 },
+        { id: 'decor_lighthouse', name: 'Phare', emoji: '🗼', price: 20000 },
+        // Décors verts
+        { id: 'decor_park', name: 'Parc', emoji: '🏞️', price: 14000 },
+        { id: 'decor_palmtree', name: 'Palmier', emoji: '🌴', price: 8000 },
+        { id: 'decor_bamboo', name: 'Bambou', emoji: '🎋', price: 10000 },
+        { id: 'decor_forest', name: 'Forêt', emoji: '🌳', price: 16000 }
     ];
 })();
