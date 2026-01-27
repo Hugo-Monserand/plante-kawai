@@ -1,5 +1,10 @@
 let growthLevel = 0;
 let maxLevel = 10;
+let unlockedAchievements = [];
+let boostUsed = false;
+let totalPlayTime = 0; // Temps de jeu total en secondes
+let hugoTyped = false;
+let tristanTyped = false;
 
 // Système de coût d'arrosage exponentiel
 const baseWateringCost = 10;  // Coût de base
@@ -843,8 +848,10 @@ function activateBoost(duration) {
         clearTimeout(activeBoost);
     }
 
+    boostUsed = true;
     document.body.classList.add('boost-active');
     updateMoneyDisplay();
+    saveGame();
 
     activeBoost = setTimeout(() => {
         activeBoost = null;
@@ -884,7 +891,12 @@ function saveGame() {
         showSidePlants: showSidePlants,
         crystals: crystals,
         hasFunnel: hasFunnel,
-        funnelPosition: funnelPosition
+        funnelPosition: funnelPosition,
+        unlockedAchievements: unlockedAchievements,
+        boostUsed: boostUsed,
+        totalPlayTime: totalPlayTime,
+        hugoTyped: hugoTyped,
+        tristanTyped: tristanTyped
     };
     localStorage.setItem('kawaiPlantSave', JSON.stringify(saveData));
 }
@@ -912,6 +924,11 @@ function loadGame() {
         crystals = data.crystals || 0;
         hasFunnel = data.hasFunnel || false;
         funnelPosition = data.funnelPosition || { x: window.innerWidth / 2 - 40, y: window.innerHeight - 250 };
+        unlockedAchievements = data.unlockedAchievements || [];
+        boostUsed = data.boostUsed || false;
+        totalPlayTime = data.totalPlayTime || 0;
+        hugoTyped = data.hugoTyped || false;
+        tristanTyped = data.tristanTyped || false;
 
         // Réappliquer les items équipés
         if (equippedPot) {
@@ -2674,4 +2691,364 @@ secretInput.addEventListener('focus', () => {
 
 secretInput.addEventListener('blur', () => {
     instructions.textContent = originalInstruction;
+});
+
+// === Système de Succès ===
+
+const achievementsModal = document.getElementById('achievementsModal');
+const achievementsClose = document.getElementById('achievementsClose');
+const achievementsList = document.getElementById('achievementsList');
+const achievementsEmpty = document.querySelector('.achievements-empty');
+
+// Données des succès
+const achievementsData = [
+    {
+        id: 'jardinier_dimanche',
+        name: 'Jardinier du dimanche',
+        desc: 'Atteins le niveau 10 avec ta plante',
+        icon: '🌱',
+        check: () => growthLevel >= maxLevel
+    },
+    {
+        id: 'fleuriste',
+        name: 'Fleuriste',
+        desc: 'Change la couleur de ta fleur',
+        icon: '🌸',
+        check: () => equippedFlower !== null
+    },
+    {
+        id: 'fleuriste_expert',
+        name: 'Fleuriste expert',
+        desc: 'Achète toutes les fleurs du jeu',
+        icon: '💐',
+        check: () => {
+            const flowerItems = shopItemsData.filter(item => item.type === 'flower');
+            return flowerItems.every(item => ownedItems.includes(item.id));
+        }
+    },
+    {
+        id: 'martiens',
+        name: 'Les martiens nous envahissent',
+        desc: 'Achète une soucoupe volante',
+        icon: '🛸',
+        check: () => placedDecorBgItems.some(item => item.type === 'decor_ufo')
+    },
+    {
+        id: 'macdo',
+        name: 'Mac do meilleur que BK',
+        desc: 'Achète l\'item légendaire',
+        icon: '🍔',
+        check: () => placedDecoItems.some(item => item.type === 'deco_million')
+    },
+    {
+        id: 'paysagiste',
+        name: 'Paysagiste',
+        desc: 'Change le fond du paysage',
+        icon: '🎨',
+        check: () => equippedBackground !== null && equippedBackground !== 'bg_default'
+    },
+    {
+        id: 'paysagiste_ultime',
+        name: 'Paysagiste ultime',
+        desc: 'Achète tous les fonds',
+        icon: '🖼️',
+        check: () => {
+            const bgItems = backgroundsData.filter(bg => bg.price > 0);
+            return bgItems.every(bg => ownedBackgrounds.includes(bg.id));
+        }
+    },
+    {
+        id: 'decorateur_tracteur',
+        name: 'Décorateurs en tracteur',
+        desc: 'Achète ta première décoration',
+        icon: '🚜',
+        check: () => placedDecoItems.length > 0
+    },
+    {
+        id: 'decorateur_ultime',
+        name: 'Décorateur ultime',
+        desc: 'Achète toutes les décorations',
+        icon: '✨',
+        check: () => {
+            const decoIds = decoItemsData.map(item => item.id);
+            return decoIds.every(id => placedDecoItems.some(placed => placed.type === id));
+        }
+    },
+    {
+        id: 'montagne_turquoise',
+        name: 'Maman regarde une montagne turquoise',
+        desc: 'Mets ta montagne en bleu',
+        icon: '⛰️',
+        check: () => selectedMountainColor === 'mountain_blue'
+    },
+    {
+        id: 'grainiste',
+        name: 'Grainiste',
+        desc: 'Achète 3 graines',
+        icon: '🌾',
+        check: () => ownedSeeds.length >= 3
+    },
+    {
+        id: 'potiste',
+        name: 'Potiste',
+        desc: 'Achète tous les pots de jardin',
+        icon: '🪴',
+        check: () => {
+            // Vérifier que tous les emplacements de jardin sont débloqués (slots 1, 2, 3)
+            return gardenSlots.length >= 4 && gardenSlots.slice(1, 4).every(slot => slot.unlocked);
+        }
+    },
+    {
+        id: 'bebe_pot',
+        name: 'Oh des bébé pot',
+        desc: 'Débloque les trois petites plantes niveau max',
+        icon: '👶',
+        check: () => {
+            const maxLevelPlants = gardenSlots.filter(slot => slot.unlocked && slot.plant && slot.level >= 10);
+            return maxLevelPlants.length >= 3;
+        }
+    },
+    {
+        id: 'flash',
+        name: 'Flash',
+        desc: 'Achète ton premier boost',
+        icon: '⚡',
+        check: () => boostUsed
+    },
+    {
+        id: 'commencons',
+        name: 'Commençons',
+        desc: 'Achète ton premier pot',
+        icon: '🪴',
+        check: () => {
+            const potItems = shopItemsData.filter(item => item.type === 'pot');
+            return potItems.some(item => ownedItems.includes(item.id));
+        }
+    },
+    {
+        id: 'etoiles_jazz',
+        name: 'Sous les étoiles du jazz',
+        desc: 'Attrape ta première étoile filante',
+        icon: '🌠',
+        check: () => crystals > 0
+    },
+    {
+        id: 'pad_colibris',
+        name: 'Pad colibris:quad',
+        desc: 'Joue pendant 1 heure',
+        icon: '⏰',
+        check: () => totalPlayTime >= 3600
+    },
+    {
+        id: 'vie_en_vert',
+        name: 'La vie en vert',
+        desc: 'Mets le sol, les arbres et les montagnes en vert',
+        icon: '🌿',
+        check: () => selectedGroundColor === 'ground_green' && selectedTreeColor === 'tree_green' && selectedMountainColor === 'mountain_green'
+    },
+    {
+        id: 'fou_chapeau',
+        name: 'Le fou n\'a plus de chapeau',
+        desc: 'Achète un entonnoir',
+        icon: '🔻',
+        check: () => hasFunnel
+    },
+    {
+        id: 'du_diamant',
+        name: 'Du diamant',
+        desc: 'Possède 1 ou plus de diamant',
+        icon: '💎',
+        check: () => crystals >= 1
+    },
+    {
+        id: 'nom_de_dieu',
+        name: 'Nom de dieu',
+        desc: 'Tape "hugo" avec ton clavier',
+        icon: '😱',
+        secret: true,
+        check: () => hugoTyped
+    },
+    {
+        id: 'premier_client',
+        name: 'Premier client',
+        desc: 'Tape "tristan" avec ton clavier',
+        icon: '🤝',
+        secret: true,
+        check: () => tristanTyped
+    }
+];
+
+function openAchievements(e) {
+    if (e) e.stopPropagation();
+    renderAchievements();
+    achievementsModal.classList.add('active');
+}
+
+function closeAchievements(e) {
+    if (e) e.stopPropagation();
+    achievementsModal.classList.remove('active');
+}
+
+function renderAchievements() {
+    achievementsList.innerHTML = '';
+
+    // Vérifier tous les succès
+    achievementsData.forEach(achievement => {
+        const isUnlocked = unlockedAchievements.includes(achievement.id);
+
+        // Cacher les succès secrets non débloqués
+        if (achievement.secret && !isUnlocked) {
+            return;
+        }
+
+        const item = document.createElement('div');
+        item.className = `achievement-item ${isUnlocked ? 'unlocked' : 'locked'}`;
+
+        item.innerHTML = `
+            <div class="achievement-icon">${achievement.icon}</div>
+            <div class="achievement-info">
+                <div class="achievement-name">${achievement.name}</div>
+                <div class="achievement-desc">${achievement.desc}</div>
+            </div>
+            <div class="achievement-badge ${isUnlocked ? 'unlocked' : 'locked'}">
+                ${isUnlocked ? 'Débloqué !' : 'Verrouillé'}
+            </div>
+        `;
+
+        achievementsList.appendChild(item);
+    });
+
+    // Afficher/cacher le message vide
+    if (unlockedAchievements.length === 0) {
+        achievementsEmpty.style.display = 'block';
+    } else {
+        achievementsEmpty.style.display = 'none';
+    }
+}
+
+function checkAchievements() {
+    let newUnlock = false;
+
+    achievementsData.forEach(achievement => {
+        if (!unlockedAchievements.includes(achievement.id)) {
+            try {
+                if (achievement.check()) {
+                    unlockedAchievements.push(achievement.id);
+                    newUnlock = true;
+                    showAchievementPopup(achievement);
+                }
+            } catch (e) {
+                // Ignorer les erreurs de vérification
+            }
+        }
+    });
+
+    if (newUnlock) {
+        saveGame();
+    }
+}
+
+function showAchievementPopup(achievement) {
+    const popup = document.createElement('div');
+    popup.className = 'achievement-popup';
+    popup.innerHTML = `
+        <div class="achievement-popup-icon">${achievement.icon}</div>
+        <div class="achievement-popup-text">
+            <div class="achievement-popup-title">Succès débloqué !</div>
+            <div class="achievement-popup-name">${achievement.name}</div>
+        </div>
+    `;
+    document.body.appendChild(popup);
+
+    setTimeout(() => {
+        popup.classList.add('show');
+    }, 100);
+
+    setTimeout(() => {
+        popup.classList.remove('show');
+        setTimeout(() => popup.remove(), 500);
+    }, 3000);
+}
+
+achievementsClose.addEventListener('click', closeAchievements);
+achievementsModal.addEventListener('click', (e) => {
+    if (e.target === achievementsModal) {
+        closeAchievements(e);
+    }
+});
+
+// Ouvrir/fermer le menu succès avec la touche S
+document.addEventListener('keydown', (e) => {
+    // Ne pas réagir si on est dans un champ de saisie
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+    }
+
+    if (e.key === 's' || e.key === 'S') {
+        e.preventDefault();
+        if (achievementsModal.classList.contains('active')) {
+            closeAchievements();
+        } else {
+            openAchievements();
+        }
+    }
+});
+
+// Vérifier les succès périodiquement
+setInterval(checkAchievements, 2000);
+
+// Compteur de temps de jeu
+setInterval(() => {
+    totalPlayTime++;
+    if (totalPlayTime % 60 === 0) {
+        saveGame(); // Sauvegarder toutes les minutes
+    }
+}, 1000);
+
+// === Détecteur de "hugo" ===
+const hugoSequence = ['h', 'u', 'g', 'o'];
+let hugoIndex = 0;
+
+// === Détecteur de "tristan" ===
+const tristanSequence = ['t', 'r', 'i', 's', 't', 'a', 'n'];
+let tristanIndex = 0;
+
+document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+    }
+
+    const key = e.key.toLowerCase();
+
+    // Vérifier "hugo"
+    if (key === hugoSequence[hugoIndex]) {
+        hugoIndex++;
+        if (hugoIndex === hugoSequence.length) {
+            hugoTyped = true;
+            hugoIndex = 0;
+            checkAchievements();
+            saveGame();
+        }
+    } else {
+        hugoIndex = 0;
+        if (key === hugoSequence[0]) {
+            hugoIndex = 1;
+        }
+    }
+
+    // Vérifier "tristan"
+    if (key === tristanSequence[tristanIndex]) {
+        tristanIndex++;
+        if (tristanIndex === tristanSequence.length) {
+            tristanTyped = true;
+            tristanIndex = 0;
+            checkAchievements();
+            saveGame();
+        }
+    } else {
+        tristanIndex = 0;
+        if (key === tristanSequence[0]) {
+            tristanIndex = 1;
+        }
+    }
 });
