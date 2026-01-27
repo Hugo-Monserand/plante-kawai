@@ -827,6 +827,7 @@ function saveGame() {
         selectedMountainColor: selectedMountainColor,
         showSidePlants: showSidePlants,
         crystals: crystals,
+        konamiUsed: konamiUsed,
         hasFunnel: hasFunnel,
         funnelPosition: funnelPosition
     };
@@ -854,6 +855,7 @@ function loadGame() {
         selectedMountainColor = data.selectedMountainColor || 'mountain_green';
         showSidePlants = data.showSidePlants !== undefined ? data.showSidePlants : true;
         crystals = data.crystals || 0;
+        konamiUsed = data.konamiUsed || 0;
         hasFunnel = data.hasFunnel || false;
         funnelPosition = data.funnelPosition || { x: window.innerWidth / 2 - 40, y: window.innerHeight - 250 };
 
@@ -2619,3 +2621,36 @@ secretInput.addEventListener('focus', () => {
 secretInput.addEventListener('blur', () => {
     instructions.textContent = originalInstruction;
 });
+
+// Konami Code : ↑ ↑ ↓ ↓ ← → ← → B A (max 3 fois)
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+let konamiUsed = 0;
+
+document.addEventListener('keydown', (e) => {
+    if (konamiUsed >= 3) return;
+    if (e.key === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+            activateKonamiReward();
+            konamiIndex = 0;
+        }
+    } else {
+        konamiIndex = 0;
+    }
+});
+
+function activateKonamiReward() {
+    konamiUsed++;
+    crystals += 100;
+    updateCrystalDisplay();
+    saveGame();
+
+    const popup = document.createElement('div');
+    popup.className = 'crystal-popup';
+    popup.textContent = '+100 💎';
+    popup.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 48px; z-index: 9999;';
+    document.body.appendChild(popup);
+
+    setTimeout(() => popup.remove(), 2000);
+}
