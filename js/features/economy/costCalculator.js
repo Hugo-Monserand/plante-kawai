@@ -15,6 +15,9 @@
             // Le premier niveau est gratuit
             if (KP.State.growthLevel === 0) return 0;
 
+            // Arrosage gratuit permanent après la première récolte
+            if (KP.State.freeWateringUnlocked) return 0;
+
             var cost = Math.floor(
                 KP.Constants.BASE_WATERING_COST *
                 Math.pow(KP.Constants.WATERING_COST_MULTIPLIER, KP.State.growthLevel - 1)

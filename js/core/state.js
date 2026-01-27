@@ -49,6 +49,7 @@
         konamiUsed: 0,
         hugoTyped: false,
         tristanTyped: false,
+        freeWateringUnlocked: false,
 
         // === Boost actif ===
         activeBoost: null,
@@ -83,6 +84,7 @@
             this.konamiUsed = 0;
             this.hugoTyped = false;
             this.tristanTyped = false;
+            this.freeWateringUnlocked = false;
             this.activeBoost = null;
         },
 
@@ -116,7 +118,8 @@
                 boostUsed: this.boostUsed,
                 totalPlayTime: this.totalPlayTime,
                 hugoTyped: this.hugoTyped,
-                tristanTyped: this.tristanTyped
+                tristanTyped: this.tristanTyped,
+                freeWateringUnlocked: this.freeWateringUnlocked
             };
         },
 
@@ -152,6 +155,7 @@
             this.totalPlayTime = data.totalPlayTime || 0;
             this.hugoTyped = data.hugoTyped || false;
             this.tristanTyped = data.tristanTyped || false;
+            this.freeWateringUnlocked = data.freeWateringUnlocked || false;
         }
     };
 

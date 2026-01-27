@@ -35,6 +35,9 @@
                 KP.State.crystals += reward;
                 KP.State.growthLevel = 0;
 
+                // Débloquer l'arrosage gratuit permanent après la première récolte
+                KP.State.freeWateringUnlocked = true;
+
                 if (plant) {
                     plant.classList.remove('harvesting');
                 }
