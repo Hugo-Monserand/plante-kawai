@@ -616,6 +616,57 @@ body {
     font-weight: bold;
 }
 
+/* Affichage du coût d'arrosage */
+.watering-cost-display {
+    position: absolute;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.95), rgba(66, 165, 245, 0.95));
+    padding: 12px 25px;
+    border-radius: 25px;
+    box-shadow: 0 5px 20px rgba(66, 165, 245, 0.4);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: white;
+    animation: wateringPulse 2s ease-in-out infinite;
+}
+
+@keyframes wateringPulse {
+    0%, 100% { box-shadow: 0 5px 20px rgba(66, 165, 245, 0.4); }
+    50% { box-shadow: 0 5px 30px rgba(66, 165, 245, 0.7); }
+}
+
+.watering-cost-label {
+    font-size: 1em;
+}
+
+.watering-cost-amount {
+    font-size: 1.3em;
+    min-width: 40px;
+    text-align: center;
+}
+
+.watering-cost-display .money-icon {
+    font-size: 1.2em;
+    animation: none;
+}
+
+.watering-cost-display.cannot-afford {
+    background: linear-gradient(135deg, rgba(239, 83, 80, 0.95), rgba(229, 57, 53, 0.95));
+    box-shadow: 0 5px 20px rgba(229, 57, 53, 0.4);
+    animation: cannotAffordShake 0.5s ease-in-out;
+}
+
+@keyframes cannotAffordShake {
+    0%, 100% { transform: translateX(-50%); }
+    25% { transform: translateX(-50%) translateX(-5px); }
+    75% { transform: translateX(-50%) translateX(5px); }
+}
+
 .instructions {
     position: absolute;
     bottom: 20px;
@@ -1744,4 +1795,172 @@ body {
 
 .toggle-btn.active {
     background: linear-gradient(135deg, #81c784, #4caf50);
+}
+
+/* Modal Succès */
+.achievements-content {
+    max-width: 450px;
+}
+
+.achievements-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #8d6e63;
+}
+
+.achievements-empty .empty-icon {
+    font-size: 4em;
+    display: block;
+    margin-bottom: 15px;
+    opacity: 0.6;
+}
+
+.achievements-empty p {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.achievements-empty .empty-hint {
+    font-size: 0.9em;
+    font-style: italic;
+    color: #a1887f;
+}
+
+.achievements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    transition: all 0.2s ease;
+}
+
+.achievement-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.achievement-item.unlocked {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 235, 59, 0.2));
+    border: 2px solid #ffd54f;
+}
+
+.achievement-item.locked {
+    opacity: 0.5;
+    filter: grayscale(0.5);
+}
+
+.achievement-icon {
+    font-size: 2em;
+    margin-right: 15px;
+    min-width: 50px;
+    text-align: center;
+}
+
+.achievement-info {
+    flex: 1;
+}
+
+.achievement-name {
+    font-weight: bold;
+    color: #5d4037;
+    margin-bottom: 3px;
+}
+
+.achievement-desc {
+    font-size: 0.85em;
+    color: #8d6e63;
+}
+
+.achievement-badge {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.achievement-badge.unlocked {
+    background: linear-gradient(135deg, #ffd54f, #ffb300);
+    color: white;
+}
+
+.achievement-badge.locked {
+    background: #e0e0e0;
+    color: #9e9e9e;
+}
+
+/* Indicateur touche S */
+.key-hint {
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 5px 12px;
+    border-radius: 10px;
+    font-size: 0.75em;
+    color: #8d6e63;
+    z-index: 99;
+}
+
+/* Popup de succès débloqué */
+.achievement-popup {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: linear-gradient(135deg, #ffd54f, #ffb300);
+    padding: 15px 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(255, 179, 0, 0.5);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.achievement-popup.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.achievement-popup-icon {
+    font-size: 2.5em;
+    animation: achievementBounce 0.5s ease;
+}
+
+@keyframes achievementBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+
+.achievement-popup-text {
+    color: white;
+}
+
+.achievement-popup-title {
+    font-size: 0.85em;
+    opacity: 0.9;
+}
+
+.achievement-popup-name {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* Animation Konami Code */
+@keyframes konamiFlash {
+    0% { filter: hue-rotate(0deg) brightness(1); }
+    25% { filter: hue-rotate(90deg) brightness(1.2); }
+    50% { filter: hue-rotate(180deg) brightness(1.4); }
+    75% { filter: hue-rotate(270deg) brightness(1.2); }
+    100% { filter: hue-rotate(360deg) brightness(1); }
 }
