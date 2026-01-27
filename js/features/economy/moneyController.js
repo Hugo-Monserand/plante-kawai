@@ -79,7 +79,8 @@
 
             if (!display || !amount) return;
 
-            if (KP.State.growthLevel >= KP.State.maxLevel) {
+            // Masquer si niveau max atteint ou arrosage gratuit permanent débloqué
+            if (KP.State.growthLevel >= KP.State.maxLevel || KP.State.freeWateringUnlocked) {
                 display.style.display = 'none';
             } else {
                 display.style.display = 'flex';
