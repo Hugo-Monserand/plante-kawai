@@ -52,6 +52,9 @@
         // 9. Initialiser le reset
         initReset();
 
+        // 10. Initialiser l'export/import
+        initSaveButtons();
+
         console.log('✅ Kawaii Plant initialisé !');
     }
 
@@ -139,6 +142,28 @@
 
         // Recharger la page pour un état propre
         location.reload();
+    }
+
+    /**
+     * Initialise les boutons d'export/import
+     */
+    function initSaveButtons() {
+        var exportBtn = document.getElementById('exportBtn');
+        var importBtn = document.getElementById('importBtn');
+
+        if (exportBtn) {
+            exportBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                KP.exportSave();
+            });
+        }
+
+        if (importBtn) {
+            importBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                KP.importSave();
+            });
+        }
     }
 
     // Lancer l'initialisation au chargement du DOM
