@@ -1,5 +1,17 @@
 let growthLevel = 0;
 let maxLevel = 10;
+
+// Système de coût d'arrosage exponentiel
+const baseWateringCost = 10;  // Coût de base
+const wateringCostMultiplier = 2;  // Multiplicateur exponentiel
+const maxWateringCost = 100000;  // Coût maximum
+
+function getWateringCost() {
+    // Le premier niveau est gratuit pour pouvoir commencer à jouer
+    if (growthLevel === 0) return 0;
+    const cost = Math.floor(baseWateringCost * Math.pow(wateringCostMultiplier, growthLevel - 1));
+    return Math.min(cost, maxWateringCost);
+}
 const stem = document.getElementById('stem');
 const leaves = document.getElementById('leaves');
 const flowersContainer = document.getElementById('flowersContainer');
@@ -60,38 +72,42 @@ const shopItemsData = [
     {
         id: 'flower_blue',
         name: 'Fleurs Bleues',
-        desc: 'De magnifiques pétales bleus',
+        desc: 'Multiplie les gains par 2 !',
         icon: '💙',
-        price: 300,
+        price: 300000,
         type: 'flower',
-        color: '#64b5f6'
+        color: '#64b5f6',
+        multiplier: 2
     },
     {
         id: 'flower_yellow',
         name: 'Fleurs Jaunes',
-        desc: 'Des fleurs couleur soleil',
+        desc: 'Multiplie les gains par 3 !',
         icon: '💛',
-        price: 300,
+        price: 300000,
         type: 'flower',
-        color: '#fff176'
+        color: '#fff176',
+        multiplier: 3
     },
     {
         id: 'flower_purple',
         name: 'Fleurs Violettes',
-        desc: 'Des pétales mystérieux',
+        desc: 'Multiplie les gains par 4 !',
         icon: '💜',
-        price: 750,
+        price: 750000,
         type: 'flower',
-        color: '#ba68c8'
+        color: '#ba68c8',
+        multiplier: 4
     },
     {
         id: 'flower_rainbow',
         name: 'Fleurs Arc-en-ciel',
-        desc: 'Toutes les couleurs !',
+        desc: 'Multiplie les gains par 5 !',
         icon: '🌈',
-        price: 2500,
+        price: 2500000,
         type: 'flower',
-        color: 'rainbow'
+        color: 'rainbow',
+        multiplier: 5
     },
     {
         id: 'boost_x2',
@@ -555,26 +571,37 @@ function animateWatering() {
     }, 1500);
 }
 
-document.addEventListener('click', (e) => {
-    // Ne pas compter les clics sur les éléments UI
-    if (e.target.closest('.shop-modal') || e.target.closest('.shop-btn') ||
-        e.target.closest('.reload-btn') || e.target.closest('.reset-btn') ||
-        e.target.closest('.reset-modal') || e.target.closest('.garden-btn') ||
-        e.target.closest('#gardenModal') || e.target.closest('.side-plant') ||
-        e.target.closest('.deco-btn') || e.target.closest('#decoModal') ||
-        e.target.closest('.deco-item') || e.target.closest('.music-btn') ||
-        e.target.closest('.bg-btn') || e.target.closest('#bgModal')) {
-        return;
-    }
+// Clic sur la plante principale pour arroser
+document.querySelector('.main-plant').addEventListener('click', (e) => {
+    e.stopPropagation();
 
     if (growthLevel < maxLevel) {
+        const cost = getWateringCost();
+
+        // Vérifier si l'utilisateur a assez d'argent
+        if (kawaiMoney < cost) {
+            // Afficher un message d'erreur
+            const popup = document.createElement('div');
+            popup.className = 'crystal-popup';
+            popup.textContent = `Pas assez de ✿ ! (${cost} requis)`;
+            popup.style.left = (e.clientX) + 'px';
+            popup.style.top = (e.clientY) + 'px';
+            popup.style.color = '#ff5252';
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 1000);
+            return;
+        }
+
+        // Déduire le coût
+        kawaiMoney -= cost;
         growthLevel++;
         animateWatering();
 
         setTimeout(() => {
             updatePlant();
-            updateMoneyDisplay(); // Mettre à jour le taux affiché
-            saveGame(); // Sauvegarder la progression
+            updateMoneyDisplay();
+            updateWateringCostDisplay();
+            saveGame();
         }, 800);
     }
 });
@@ -591,6 +618,14 @@ function getMoneyRate() {
         }
     });
 
+    // Appliquer le multiplicateur de la fleur équipée
+    if (equippedFlower) {
+        const flowerItem = shopItemsData.find(item => item.id === equippedFlower);
+        if (flowerItem && flowerItem.multiplier) {
+            rate *= flowerItem.multiplier;
+        }
+    }
+
     if (activeBoost) {
         rate *= 2;
     }
@@ -601,6 +636,27 @@ function updateMoneyDisplay() {
     moneyAmountDisplay.textContent = Math.floor(kawaiMoney);
     moneyRateDisplay.textContent = getMoneyRate();
     shopBalance.textContent = Math.floor(kawaiMoney);
+    updateWateringCostDisplay();
+}
+
+function updateWateringCostDisplay() {
+    const wateringCostDisplay = document.getElementById('wateringCostDisplay');
+    const wateringCostAmount = document.getElementById('wateringCostAmount');
+    const cost = getWateringCost();
+
+    if (growthLevel >= maxLevel) {
+        wateringCostDisplay.style.display = 'none';
+    } else {
+        wateringCostDisplay.style.display = 'flex';
+        wateringCostAmount.textContent = cost;
+
+        // Changer la couleur si l'utilisateur n'a pas assez d'argent
+        if (kawaiMoney < cost) {
+            wateringCostDisplay.classList.add('cannot-afford');
+        } else {
+            wateringCostDisplay.classList.remove('cannot-afford');
+        }
+    }
 }
 
 function generateMoney() {

@@ -616,6 +616,57 @@ body {
     font-weight: bold;
 }
 
+/* Affichage du coût d'arrosage */
+.watering-cost-display {
+    position: absolute;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, rgba(100, 181, 246, 0.95), rgba(66, 165, 245, 0.95));
+    padding: 12px 25px;
+    border-radius: 25px;
+    box-shadow: 0 5px 20px rgba(66, 165, 245, 0.4);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: white;
+    animation: wateringPulse 2s ease-in-out infinite;
+}
+
+@keyframes wateringPulse {
+    0%, 100% { box-shadow: 0 5px 20px rgba(66, 165, 245, 0.4); }
+    50% { box-shadow: 0 5px 30px rgba(66, 165, 245, 0.7); }
+}
+
+.watering-cost-label {
+    font-size: 1em;
+}
+
+.watering-cost-amount {
+    font-size: 1.3em;
+    min-width: 40px;
+    text-align: center;
+}
+
+.watering-cost-display .money-icon {
+    font-size: 1.2em;
+    animation: none;
+}
+
+.watering-cost-display.cannot-afford {
+    background: linear-gradient(135deg, rgba(239, 83, 80, 0.95), rgba(229, 57, 53, 0.95));
+    box-shadow: 0 5px 20px rgba(229, 57, 53, 0.4);
+    animation: cannotAffordShake 0.5s ease-in-out;
+}
+
+@keyframes cannotAffordShake {
+    0%, 100% { transform: translateX(-50%); }
+    25% { transform: translateX(-50%) translateX(-5px); }
+    75% { transform: translateX(-50%) translateX(5px); }
+}
+
 .instructions {
     position: absolute;
     bottom: 20px;
