@@ -130,6 +130,15 @@ const shopItemsData = [
         icon: '🔻',
         price: 1000000,
         type: 'funnel'
+    },
+    {
+        id: 'diamond_mine',
+        name: 'Mine à Diamant',
+        desc: 'Produit 1 diamant toutes les 10 secondes',
+        icon: '⛏️',
+        price: 100,
+        type: 'diamond_mine',
+        currency: 'diamond'
     }
 ];
 
@@ -298,6 +307,7 @@ let showSidePlants = true;
 
 // === Système de Météorites et Cristaux ===
 let crystals = 0;
+let diamondMines = 0;
 const crystalAmountDisplay = document.getElementById('crystalAmount');
 const meteorsContainer = document.getElementById('meteorsContainer');
 
@@ -702,18 +712,26 @@ function renderShopItems() {
 
     shopItemsData.forEach(item => {
         const isOwned = ownedItems.includes(item.id);
-        const canAfford = kawaiMoney >= item.price;
+        const isDiamondItem = item.currency === 'diamond';
+        const canAfford = isDiamondItem ? crystals >= item.price : kawaiMoney >= item.price;
         const isEquipped = (item.type === 'pot' && equippedPot === item.id) ||
                           (item.type === 'flower' && equippedFlower === item.id);
+        const isStackable = item.type === 'diamond_mine';
 
         const itemEl = document.createElement('div');
-        itemEl.className = 'shop-item' + (isOwned ? ' owned' : '') + (!canAfford && !isOwned ? ' locked' : '') + (isEquipped ? ' equipped' : '');
+        itemEl.className = 'shop-item' + (isOwned && !isStackable ? ' owned' : '') + (!canAfford && !isOwned ? ' locked' : '') + (isEquipped ? ' equipped' : '');
 
-        let buttonText = `✿ ${item.price}`;
+        let buttonText = isDiamondItem ? `💎 ${item.price}` : `✿ ${item.price}`;
         let buttonClass = 'item-price';
         let buttonDisabled = false;
 
-        if (isOwned && item.type !== 'boost') {
+        // Pour les items empilables comme les mines, afficher le nombre possédé
+        let itemNameSuffix = '';
+        if (isStackable && diamondMines > 0) {
+            itemNameSuffix = ` (x${diamondMines})`;
+        }
+
+        if (isOwned && item.type !== 'boost' && !isStackable) {
             if (isEquipped) {
                 buttonText = '✓ Équipé';
                 buttonClass += ' equipped-btn';
@@ -722,14 +740,16 @@ function renderShopItems() {
                 buttonText = 'Équiper';
                 buttonClass += ' equip-btn';
             }
-        } else if (!canAfford && !isOwned) {
+        } else if (!canAfford && !isOwned && !isStackable) {
+            buttonDisabled = true;
+        } else if (isStackable && !canAfford) {
             buttonDisabled = true;
         }
 
         itemEl.innerHTML = `
             <div class="item-icon">${item.icon}</div>
             <div class="item-info">
-                <div class="item-name">${item.name}</div>
+                <div class="item-name">${item.name}${itemNameSuffix}</div>
                 <div class="item-desc">${item.desc}</div>
             </div>
             <button class="${buttonClass}" ${buttonDisabled ? 'disabled' : ''}>
@@ -739,7 +759,7 @@ function renderShopItems() {
 
         const buyBtn = itemEl.querySelector('button');
         if (!buttonDisabled) {
-            if (isOwned && item.type !== 'boost') {
+            if (isOwned && item.type !== 'boost' && !isStackable) {
                 // Bouton Équiper
                 buyBtn.onclick = (e) => {
                     e.stopPropagation();
@@ -759,9 +779,16 @@ function renderShopItems() {
 }
 
 function buyItem(item) {
-    if (kawaiMoney < item.price) return;
+    const isDiamondItem = item.currency === 'diamond';
 
-    kawaiMoney -= item.price;
+    if (isDiamondItem) {
+        if (crystals < item.price) return;
+        crystals -= item.price;
+        updateCrystalDisplay();
+    } else {
+        if (kawaiMoney < item.price) return;
+        kawaiMoney -= item.price;
+    }
 
     if (item.type === 'boost') {
         applyItem(item);
@@ -769,6 +796,9 @@ function buyItem(item) {
         hasFunnel = true;
         ownedItems.push(item.id);
         renderFunnel();
+    } else if (item.type === 'diamond_mine') {
+        diamondMines++;
+        updateCrystalDisplay();
     } else {
         ownedItems.push(item.id);
 
@@ -890,6 +920,7 @@ function saveGame() {
         selectedMountainColor: selectedMountainColor,
         showSidePlants: showSidePlants,
         crystals: crystals,
+        diamondMines: diamondMines,
         konamiUsed: konamiUsed,
         hasFunnel: hasFunnel,
         funnelPosition: funnelPosition,
@@ -923,6 +954,7 @@ function loadGame() {
         selectedMountainColor = data.selectedMountainColor || 'mountain_green';
         showSidePlants = data.showSidePlants !== undefined ? data.showSidePlants : true;
         crystals = data.crystals || 0;
+        diamondMines = data.diamondMines || 0;
         konamiUsed = data.konamiUsed || 0;
         hasFunnel = data.hasFunnel || false;
         funnelPosition = data.funnelPosition || { x: window.innerWidth / 2 - 40, y: window.innerHeight - 250 };
@@ -2185,9 +2217,26 @@ natureColorModal.addEventListener('click', (e) => {
 
 // === Fonctions Météorites ===
 
+function getDiamondRate() {
+    return diamondMines;
+}
+
 function updateCrystalDisplay() {
     crystalAmountDisplay.textContent = crystals;
+    document.getElementById('crystalRate').textContent = getDiamondRate();
 }
+
+function generateDiamonds() {
+    const rate = getDiamondRate();
+    if (rate > 0) {
+        crystals += rate;
+        updateCrystalDisplay();
+        saveGame();
+    }
+}
+
+// Générer les diamants toutes les 10 secondes
+setInterval(generateDiamonds, 10000);
 
 function spawnMeteor() {
     const meteor = document.createElement('div');

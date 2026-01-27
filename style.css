@@ -790,6 +790,11 @@ body {
     min-width: 30px;
 }
 
+.crystal-rate {
+    font-size: 0.8em;
+    color: #7c4dff;
+}
+
 /* Conteneur des météorites */
 .meteors-container {
     position: fixed;
