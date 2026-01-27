@@ -191,6 +191,22 @@
             icon: '🤝',
             secret: true,
             check: function() { return KP.State.tristanTyped; }
+        },
+        {
+            id: 'konami_master',
+            name: 'Konami Master',
+            desc: 'Effectue le Konami Code',
+            icon: '🎮',
+            secret: true,
+            check: function() { return KP.State.konamiUsed > 0; }
+        },
+        {
+            id: 'arr_nn',
+            name: 'Arr nn?',
+            desc: 'Tape 3 fois le Konami Code',
+            icon: '🏴‍☠️',
+            secret: true,
+            check: function() { return KP.State.konamiUsed >= 3; }
         }
     ];
 })();

@@ -26,6 +26,7 @@
             KP.State.konamiUsed++;
             KP.State.crystals += 100;
             KP.Features.Economy.Crystals.updateDisplay();
+            KP.Features.Achievements.check();
             KP.save();
 
             KP.UI.Notifications.showCenteredPopup('+100 💎');
