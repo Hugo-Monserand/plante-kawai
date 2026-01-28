@@ -54,6 +54,11 @@
         // === Boost actif ===
         activeBoost: null,
 
+        // === Quêtes ===
+        questHourSeed: null,
+        activeQuests: [],
+        questTracking: null,
+
         /**
          * Réinitialise l'état à ses valeurs par défaut
          */
@@ -86,6 +91,9 @@
             this.tristanTyped = false;
             this.freeWateringUnlocked = false;
             this.activeBoost = null;
+            this.questHourSeed = null;
+            this.activeQuests = [];
+            this.questTracking = null;
         },
 
         /**
@@ -119,7 +127,10 @@
                 totalPlayTime: this.totalPlayTime,
                 hugoTyped: this.hugoTyped,
                 tristanTyped: this.tristanTyped,
-                freeWateringUnlocked: this.freeWateringUnlocked
+                freeWateringUnlocked: this.freeWateringUnlocked,
+                questHourSeed: this.questHourSeed,
+                activeQuests: this.activeQuests,
+                questTracking: this.questTracking
             };
         },
 
@@ -156,6 +167,9 @@
             this.hugoTyped = data.hugoTyped || false;
             this.tristanTyped = data.tristanTyped || false;
             this.freeWateringUnlocked = data.freeWateringUnlocked || false;
+            this.questHourSeed = data.questHourSeed || null;
+            this.activeQuests = data.activeQuests || [];
+            this.questTracking = data.questTracking || null;
         }
     };
 

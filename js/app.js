@@ -32,6 +32,7 @@
         KP.Features.Meteors.Controller.init();
         KP.Features.Meteors.Funnel.init();
         KP.Features.Achievements.Controller.init();
+        KP.Features.Quests.Controller.init();
         KP.Features.Secrets.Codes.init();
 
         // 5. Démarrer les générateurs

@@ -2024,3 +2024,196 @@ body {
     75% { filter: hue-rotate(270deg) brightness(1.2); }
     100% { filter: hue-rotate(360deg) brightness(1); }
 }
+
+/* Bouton Quêtes */
+.quest-btn {
+    position: absolute;
+    bottom: 270px;
+    left: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    box-shadow: 0 4px 15px rgba(245, 124, 0, 0.4);
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.quest-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(245, 124, 0, 0.6);
+}
+
+.quest-btn:active {
+    transform: scale(0.95);
+}
+
+.quest-icon {
+    font-size: 1.2em;
+}
+
+/* Modal Quêtes */
+.quests-content {
+    max-width: 480px;
+}
+
+.quests-timer {
+    text-align: center;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(245, 124, 0, 0.2));
+    border-radius: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.timer-label {
+    color: #5d4037;
+    font-weight: bold;
+}
+
+.timer-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #f57c00;
+    font-family: monospace;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 5px 15px;
+    border-radius: 10px;
+}
+
+.quests-reward-info {
+    text-align: center;
+    padding: 10px;
+    background: rgba(124, 77, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    color: #7c4dff;
+    font-weight: bold;
+}
+
+.quests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quest-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    transition: all 0.2s ease;
+    gap: 12px;
+}
+
+.quest-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.quest-item.completed {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(129, 199, 132, 0.2));
+    border: 2px solid #81c784;
+}
+
+.quest-item.claimed {
+    opacity: 0.6;
+    filter: grayscale(0.3);
+}
+
+.quest-icon {
+    font-size: 2em;
+    min-width: 50px;
+    text-align: center;
+}
+
+.quest-info {
+    flex: 1;
+}
+
+.quest-name {
+    font-weight: bold;
+    color: #5d4037;
+    margin-bottom: 3px;
+}
+
+.quest-desc {
+    font-size: 0.85em;
+    color: #8d6e63;
+    margin-bottom: 8px;
+}
+
+.quest-progress-bar {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.quest-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff9800, #f57c00);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.quest-item.completed .quest-progress-fill {
+    background: linear-gradient(90deg, #4caf50, #81c784);
+}
+
+.quest-reward {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 90px;
+}
+
+.quest-progress-text {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #f57c00;
+    background: rgba(255, 152, 0, 0.1);
+    padding: 5px 12px;
+    border-radius: 10px;
+}
+
+.quest-claim-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #7c4dff, #651fff);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.85em;
+    animation: claimPulse 1s ease-in-out infinite;
+}
+
+.quest-claim-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(124, 77, 255, 0.5);
+}
+
+@keyframes claimPulse {
+    0%, 100% { box-shadow: 0 0 5px rgba(124, 77, 255, 0.3); }
+    50% { box-shadow: 0 0 15px rgba(124, 77, 255, 0.6); }
+}
+
+.quest-claimed {
+    font-size: 0.85em;
+    color: #81c784;
+    font-weight: bold;
+    padding: 5px 10px;
+}
