@@ -32,7 +32,6 @@
         KP.Features.Meteors.Controller.init();
         KP.Features.Meteors.Funnel.init();
         KP.Features.Achievements.Controller.init();
-        KP.Features.Quests.Controller.init();
         KP.Features.Secrets.Codes.init();
         KP.Features.Lootbox.Controller.init();
 
