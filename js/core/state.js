@@ -49,7 +49,9 @@
         konamiUsed: 0,
         hugoTyped: false,
         tristanTyped: false,
+        code42Used: false,
         freeWateringUnlocked: false,
+        harvestCount: 0,
 
         // === Boost actif ===
         activeBoost: null,
@@ -84,7 +86,9 @@
             this.konamiUsed = 0;
             this.hugoTyped = false;
             this.tristanTyped = false;
+            this.code42Used = false;
             this.freeWateringUnlocked = false;
+            this.harvestCount = 0;
             this.activeBoost = null;
         },
 
@@ -119,7 +123,9 @@
                 totalPlayTime: this.totalPlayTime,
                 hugoTyped: this.hugoTyped,
                 tristanTyped: this.tristanTyped,
-                freeWateringUnlocked: this.freeWateringUnlocked
+                code42Used: this.code42Used,
+                freeWateringUnlocked: this.freeWateringUnlocked,
+                harvestCount: this.harvestCount
             };
         },
 
@@ -155,7 +161,9 @@
             this.totalPlayTime = data.totalPlayTime || 0;
             this.hugoTyped = data.hugoTyped || false;
             this.tristanTyped = data.tristanTyped || false;
+            this.code42Used = data.code42Used || false;
             this.freeWateringUnlocked = data.freeWateringUnlocked || false;
+            this.harvestCount = data.harvestCount || 0;
         }
     };
 

@@ -69,7 +69,8 @@
 
             secretInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
-                    if (secretInput.value === '42') {
+                    if (secretInput.value === '42' && !KP.State.code42Used) {
+                        KP.State.code42Used = true;
                         KP.State.kawaiMoney += 1000000;
                         KP.Features.Economy.Money.updateDisplay();
                         KP.save();
