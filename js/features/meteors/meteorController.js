@@ -70,6 +70,9 @@
             KP.Features.Economy.Crystals.updateDisplay();
             KP.save();
 
+            // Émettre l'événement pour les quêtes
+            KP.emit('meteor:collected');
+
             // Popup +1
             KP.UI.Notifications.showGain('+1 💎', x, y);
 

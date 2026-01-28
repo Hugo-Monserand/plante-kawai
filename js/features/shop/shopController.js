@@ -15,6 +15,7 @@
             KP.UI.Modal.open('shop', function() {
                 KP.Features.Shop.render();
             });
+            KP.emit('shop:opened');
         },
 
         /**

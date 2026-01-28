@@ -56,6 +56,11 @@
         // === Boost actif ===
         activeBoost: null,
 
+        // === Quêtes ===
+        questHourSeed: null,
+        activeQuests: [],
+        questTracking: null,
+
         /**
          * Réinitialise l'état à ses valeurs par défaut
          */
@@ -90,6 +95,9 @@
             this.freeWateringUnlocked = false;
             this.harvestCount = 0;
             this.activeBoost = null;
+            this.questHourSeed = null;
+            this.activeQuests = [];
+            this.questTracking = null;
         },
 
         /**
@@ -125,7 +133,10 @@
                 tristanTyped: this.tristanTyped,
                 code42Used: this.code42Used,
                 freeWateringUnlocked: this.freeWateringUnlocked,
-                harvestCount: this.harvestCount
+                harvestCount: this.harvestCount,
+                questHourSeed: this.questHourSeed,
+                activeQuests: this.activeQuests,
+                questTracking: this.questTracking
             };
         },
 
@@ -164,6 +175,9 @@
             this.code42Used = data.code42Used || false;
             this.freeWateringUnlocked = data.freeWateringUnlocked || false;
             this.harvestCount = data.harvestCount || 0;
+            this.questHourSeed = data.questHourSeed || null;
+            this.activeQuests = data.activeQuests || [];
+            this.questTracking = data.questTracking || null;
         }
     };
 

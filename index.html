@@ -142,6 +142,12 @@
         <span class="decor-text">Décors</span>
     </button>
 
+    <!-- Bouton Quêtes -->
+    <button class="quest-btn" id="questBtn">
+        <span class="quest-icon">📜</span>
+        <span class="quest-text">Quêtes</span>
+    </button>
+
     <!-- Modal du Magasin -->
     <div class="shop-modal" id="shopModal">
         <div class="shop-content">
@@ -257,6 +263,26 @@
         </div>
     </div>
 
+    <!-- Modal Quêtes -->
+    <div class="shop-modal" id="questsModal">
+        <div class="shop-content quests-content">
+            <div class="shop-header">
+                <h2>📜 Quêtes Horaires 📜</h2>
+                <button class="shop-close" id="questsClose">✕</button>
+            </div>
+            <div class="quests-timer">
+                <span class="timer-label">Nouvelles quêtes dans:</span>
+                <span class="timer-value" id="questTimer">00:00</span>
+            </div>
+            <div class="quests-reward-info">
+                <span>💎 100 diamants par quête complétée</span>
+            </div>
+            <div class="quests-list" id="questsList">
+                <!-- Quêtes générées par JS -->
+            </div>
+        </div>
+    </div>
+
     <!-- Affichage du coût d'arrosage -->
     <div class="watering-cost-display" id="wateringCostDisplay">
         <span class="watering-cost-label">💧 Arroser:</span>
@@ -355,6 +381,7 @@
     <script src="js/config/backgrounds.js"></script>
     <script src="js/config/colors.js"></script>
     <script src="js/config/achievements.js"></script>
+    <script src="js/config/quests.js"></script>
 
     <!-- UI -->
     <script src="js/ui/modalManager.js"></script>
@@ -395,6 +422,9 @@
 
     <!-- Features - Achievements -->
     <script src="js/features/achievements/achievementController.js"></script>
+
+    <!-- Features - Quests -->
+    <script src="js/features/quests/questController.js"></script>
 
     <!-- Features - Secrets -->
     <script src="js/features/secrets/secretCodes.js"></script>

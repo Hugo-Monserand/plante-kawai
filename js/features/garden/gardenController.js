@@ -85,6 +85,7 @@
                 this.render();
                 KP.Features.Garden.Renderer.renderSidePlants();
                 KP.save();
+                KP.emit('garden:watered');
             }
         },
 

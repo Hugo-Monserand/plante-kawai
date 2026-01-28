@@ -16,6 +16,7 @@
 
             this.updateDisplay();
             KP.emit('money:changed', { amount: KP.State.kawaiMoney, rate: rate });
+            KP.emit('money:earned', { amount: rate });
         },
 
         /**
