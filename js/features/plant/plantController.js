@@ -37,6 +37,7 @@
 
                 // Débloquer l'arrosage gratuit permanent après la première récolte
                 KP.State.freeWateringUnlocked = true;
+                KP.State.harvestCount++;
 
                 if (plant) {
                     plant.classList.remove('harvesting');
