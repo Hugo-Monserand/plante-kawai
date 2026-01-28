@@ -49,7 +49,9 @@
         konamiUsed: 0,
         hugoTyped: false,
         tristanTyped: false,
+        code42Used: false,
         freeWateringUnlocked: false,
+        harvestCount: 0,
 
         // === Boost actif ===
         activeBoost: null,
@@ -89,7 +91,9 @@
             this.konamiUsed = 0;
             this.hugoTyped = false;
             this.tristanTyped = false;
+            this.code42Used = false;
             this.freeWateringUnlocked = false;
+            this.harvestCount = 0;
             this.activeBoost = null;
             this.questHourSeed = null;
             this.activeQuests = [];
@@ -127,7 +131,9 @@
                 totalPlayTime: this.totalPlayTime,
                 hugoTyped: this.hugoTyped,
                 tristanTyped: this.tristanTyped,
+                code42Used: this.code42Used,
                 freeWateringUnlocked: this.freeWateringUnlocked,
+                harvestCount: this.harvestCount,
                 questHourSeed: this.questHourSeed,
                 activeQuests: this.activeQuests,
                 questTracking: this.questTracking
@@ -166,7 +172,9 @@
             this.totalPlayTime = data.totalPlayTime || 0;
             this.hugoTyped = data.hugoTyped || false;
             this.tristanTyped = data.tristanTyped || false;
+            this.code42Used = data.code42Used || false;
             this.freeWateringUnlocked = data.freeWateringUnlocked || false;
+            this.harvestCount = data.harvestCount || 0;
             this.questHourSeed = data.questHourSeed || null;
             this.activeQuests = data.activeQuests || [];
             this.questTracking = data.questTracking || null;
