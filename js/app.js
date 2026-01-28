@@ -33,6 +33,7 @@
         KP.Features.Meteors.Funnel.init();
         KP.Features.Achievements.Controller.init();
         KP.Features.Secrets.Codes.init();
+        KP.Features.Lootbox.Controller.init();
 
         // 5. Démarrer les générateurs
         KP.Features.Economy.Money.startGeneration();

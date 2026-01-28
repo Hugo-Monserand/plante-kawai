@@ -142,6 +142,12 @@
         <span class="decor-text">Décors</span>
     </button>
 
+    <!-- Bouton Lootbox -->
+    <button class="lootbox-btn" id="lootboxBtn">
+        <span class="lootbox-icon">🎁</span>
+        <span class="lootbox-text">Coffres</span>
+    </button>
+
     <!-- Modal du Magasin -->
     <div class="shop-modal" id="shopModal">
         <div class="shop-content">
@@ -235,6 +241,23 @@
             </div>
             <div class="shop-items" id="decorItems">
                 <!-- Items générés par JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Lootbox -->
+    <div class="shop-modal" id="lootboxModal">
+        <div class="shop-content lootbox-content">
+            <div class="shop-header">
+                <h2>🎁 Coffres Mystère 🎁</h2>
+                <button class="shop-close" id="lootboxClose">✕</button>
+            </div>
+            <div class="shop-balance crystal-balance">
+                <span class="crystal-icon">💎</span>
+                <span id="lootboxBalance">0</span> Diamants
+            </div>
+            <div class="shop-items lootbox-items" id="lootboxItems">
+                <!-- Lootboxes générées par JS -->
             </div>
         </div>
     </div>
@@ -355,6 +378,7 @@
     <script src="js/config/backgrounds.js"></script>
     <script src="js/config/colors.js"></script>
     <script src="js/config/achievements.js"></script>
+    <script src="js/config/lootboxItems.js"></script>
 
     <!-- UI -->
     <script src="js/ui/modalManager.js"></script>
@@ -392,6 +416,10 @@
     <!-- Features - Meteors -->
     <script src="js/features/meteors/meteorController.js"></script>
     <script src="js/features/meteors/funnelController.js"></script>
+
+    <!-- Features - Lootbox -->
+    <script src="js/features/lootbox/lootboxRenderer.js"></script>
+    <script src="js/features/lootbox/lootboxController.js"></script>
 
     <!-- Features - Achievements -->
     <script src="js/features/achievements/achievementController.js"></script>

@@ -53,6 +53,9 @@
         freeWateringUnlocked: false,
         harvestCount: 0,
 
+        // === Secrets débloqués ===
+        secretImageUnlocked: false,
+
         // === Boost actif ===
         activeBoost: null,
 
@@ -90,6 +93,7 @@
             this.freeWateringUnlocked = false;
             this.harvestCount = 0;
             this.activeBoost = null;
+            this.secretImageUnlocked = false;
         },
 
         /**
@@ -125,7 +129,8 @@
                 tristanTyped: this.tristanTyped,
                 code42Used: this.code42Used,
                 freeWateringUnlocked: this.freeWateringUnlocked,
-                harvestCount: this.harvestCount
+                harvestCount: this.harvestCount,
+                secretImageUnlocked: this.secretImageUnlocked
             };
         },
 
@@ -164,6 +169,7 @@
             this.code42Used = data.code42Used || false;
             this.freeWateringUnlocked = data.freeWateringUnlocked || false;
             this.harvestCount = data.harvestCount || 0;
+            this.secretImageUnlocked = data.secretImageUnlocked || false;
         }
     };
 

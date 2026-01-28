@@ -23,11 +23,42 @@
         renderShop: function() {
             var container = document.getElementById('decoItems');
             var balance = document.getElementById('decoBalance');
+            var self = this;
 
             if (balance) balance.textContent = Math.floor(KP.State.kawaiMoney);
             if (!container) return;
 
             container.innerHTML = '';
+
+            // Ajouter l'item secret si débloqué (en premier)
+            if (KP.State.secretImageUnlocked) {
+                var secretItem = {
+                    id: 'secret_cat',
+                    name: 'Chat Secret',
+                    emoji: '<img class="deco-img" src="' + KP.Config.SecretImage + '" alt="Chat">',
+                    price: 0,
+                    isImage: true
+                };
+
+                var secretEl = document.createElement('div');
+                secretEl.className = 'shop-item secret-item';
+
+                secretEl.innerHTML = [
+                    '<div class="item-icon">' + secretItem.emoji + '</div>',
+                    '<div class="item-info">',
+                    '    <div class="item-name secret-name">' + secretItem.name + '</div>',
+                    '    <div class="item-desc">Ultra rare! Gratuit et illimité</div>',
+                    '</div>',
+                    '<button class="item-price secret-price">GRATUIT</button>'
+                ].join('');
+
+                secretEl.querySelector('button').onclick = function(e) {
+                    e.stopPropagation();
+                    self.buySecret(secretItem);
+                };
+
+                container.appendChild(secretEl);
+            }
 
             KP.Config.DecoItems.forEach(function(item) {
                 var canAfford = KP.State.kawaiMoney >= item.price;
@@ -53,6 +84,20 @@
 
                 container.appendChild(itemEl);
             });
+        },
+
+        /**
+         * Achète l'item secret (gratuit et illimité)
+         */
+        buySecret: function(item) {
+            KP.State.placedDecoItems.push({
+                type: item.id,
+                x: window.innerWidth / 2 - 20,
+                y: window.innerHeight / 2 - 20
+            });
+
+            this.renderDecoItems();
+            KP.save();
         },
 
         /**
@@ -84,13 +129,26 @@
             });
 
             KP.State.placedDecoItems.forEach(function(placed, index) {
-                var item = KP.Config.DecoItems.find(function(i) {
-                    return i.id === placed.type;
-                });
+                // Gérer l'item secret
+                var item;
+                var isSecretItem = placed.type === 'secret_cat';
+
+                if (isSecretItem) {
+                    item = {
+                        id: 'secret_cat',
+                        emoji: '<img class="deco-img secret-deco-img" src="' + KP.Config.SecretImage + '" alt="Chat">',
+                        isImage: true
+                    };
+                } else {
+                    item = KP.Config.DecoItems.find(function(i) {
+                        return i.id === placed.type;
+                    });
+                }
+
                 if (!item) return;
 
                 var decoEl = document.createElement('div');
-                decoEl.className = 'deco-item';
+                decoEl.className = 'deco-item' + (isSecretItem ? ' secret-deco' : '');
                 decoEl.style.left = placed.x + 'px';
                 decoEl.style.top = placed.y + 'px';
 
@@ -99,7 +157,11 @@
                 var scale = placed.scale || 1;
                 decoEl.style.transform = 'rotate(' + rotation + 'deg) scale(' + scale + ')';
 
-                decoEl.innerHTML = '<span class="deco-emoji">' + item.emoji + '</span>';
+                if (item.isImage) {
+                    decoEl.innerHTML = item.emoji;
+                } else {
+                    decoEl.innerHTML = '<span class="deco-emoji">' + item.emoji + '</span>';
+                }
 
                 // Menu contextuel (clic droit)
                 decoEl.oncontextmenu = function(e) {
