@@ -77,7 +77,7 @@
          * Initialise toutes les modales
          */
         init: function() {
-            var modals = ['shop', 'garden', 'deco', 'bg', 'decor', 'natureColor', 'achievements', 'quests', 'reset'];
+            var modals = ['shop', 'garden', 'deco', 'bg', 'decor', 'natureColor', 'achievements', 'quests', 'reset', 'lootbox'];
             var self = this;
 
             modals.forEach(function(name) {
@@ -94,6 +94,7 @@
             this.setupCloseButton('achievements', 'achievementsClose');
             this.setupCloseButton('quests', 'questsClose');
             this.setupCloseButton('reset', 'resetCancel');
+            this.setupCloseButton('lootbox', 'lootboxClose');
         },
 
         /**
@@ -110,7 +111,8 @@
                 natureColor: 'natureColorModal',
                 achievements: 'achievementsModal',
                 quests: 'questsModal',
-                reset: 'resetModal'
+                reset: 'resetModal',
+                lootbox: 'lootboxModal'
             };
 
             var id = modalIds[name];

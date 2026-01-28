@@ -53,6 +53,9 @@
         freeWateringUnlocked: false,
         harvestCount: 0,
 
+        // === Secrets débloqués ===
+        secretImageUnlocked: false,
+
         // === Boost actif ===
         activeBoost: null,
 
@@ -95,6 +98,7 @@
             this.freeWateringUnlocked = false;
             this.harvestCount = 0;
             this.activeBoost = null;
+            this.secretImageUnlocked = false;
             this.questHourSeed = null;
             this.activeQuests = [];
             this.questTracking = null;
@@ -134,6 +138,7 @@
                 code42Used: this.code42Used,
                 freeWateringUnlocked: this.freeWateringUnlocked,
                 harvestCount: this.harvestCount,
+                secretImageUnlocked: this.secretImageUnlocked,
                 questHourSeed: this.questHourSeed,
                 activeQuests: this.activeQuests,
                 questTracking: this.questTracking
@@ -175,6 +180,7 @@
             this.code42Used = data.code42Used || false;
             this.freeWateringUnlocked = data.freeWateringUnlocked || false;
             this.harvestCount = data.harvestCount || 0;
+            this.secretImageUnlocked = data.secretImageUnlocked || false;
             this.questHourSeed = data.questHourSeed || null;
             this.activeQuests = data.activeQuests || [];
             this.questTracking = data.questTracking || null;
