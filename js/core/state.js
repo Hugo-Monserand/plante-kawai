@@ -57,6 +57,8 @@
 
         // === Secrets débloqués ===
         secretImageUnlocked: false,
+        epicSecretImageUnlocked: false,
+        legendarySecretImageUnlocked: false,
         lootboxesBought: 0,
         epicLootboxesBought: 0,
         legendaryLootboxesBought: 0,
@@ -101,6 +103,8 @@
             this.meteorsCollected = 0;
             this.activeBoost = null;
             this.secretImageUnlocked = false;
+            this.epicSecretImageUnlocked = false;
+            this.legendarySecretImageUnlocked = false;
             this.lootboxesBought = 0;
             this.epicLootboxesBought = 0;
             this.legendaryLootboxesBought = 0;
@@ -143,6 +147,8 @@
                 harvestCount: this.harvestCount,
                 meteorsCollected: this.meteorsCollected,
                 secretImageUnlocked: this.secretImageUnlocked,
+                epicSecretImageUnlocked: this.epicSecretImageUnlocked,
+                legendarySecretImageUnlocked: this.legendarySecretImageUnlocked,
                 lootboxesBought: this.lootboxesBought,
                 epicLootboxesBought: this.epicLootboxesBought,
                 legendaryLootboxesBought: this.legendaryLootboxesBought
@@ -187,6 +193,8 @@
             this.harvestCount = data.harvestCount || 0;
             this.meteorsCollected = data.meteorsCollected || 0;
             this.secretImageUnlocked = data.secretImageUnlocked || false;
+            this.epicSecretImageUnlocked = data.epicSecretImageUnlocked || false;
+            this.legendarySecretImageUnlocked = data.legendarySecretImageUnlocked || false;
             this.lootboxesBought = data.lootboxesBought || 0;
             this.epicLootboxesBought = data.epicLootboxesBought || 0;
             this.legendaryLootboxesBought = data.legendaryLootboxesBought || 0;
