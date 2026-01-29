@@ -49,12 +49,17 @@
         konamiUsed: 0,
         hugoTyped: false,
         tristanTyped: false,
+        technobladeTyped: false,
         code42Used: false,
         freeWateringUnlocked: false,
         harvestCount: 0,
+        meteorsCollected: 0,
 
         // === Secrets débloqués ===
         secretImageUnlocked: false,
+        lootboxesBought: 0,
+        epicLootboxesBought: 0,
+        legendaryLootboxesBought: 0,
 
         // === Boost actif ===
         activeBoost: null,
@@ -89,11 +94,16 @@
             this.konamiUsed = 0;
             this.hugoTyped = false;
             this.tristanTyped = false;
+            this.technobladeTyped = false;
             this.code42Used = false;
             this.freeWateringUnlocked = false;
             this.harvestCount = 0;
+            this.meteorsCollected = 0;
             this.activeBoost = null;
             this.secretImageUnlocked = false;
+            this.lootboxesBought = 0;
+            this.epicLootboxesBought = 0;
+            this.legendaryLootboxesBought = 0;
         },
 
         /**
@@ -127,10 +137,15 @@
                 totalPlayTime: this.totalPlayTime,
                 hugoTyped: this.hugoTyped,
                 tristanTyped: this.tristanTyped,
+                technobladeTyped: this.technobladeTyped,
                 code42Used: this.code42Used,
                 freeWateringUnlocked: this.freeWateringUnlocked,
                 harvestCount: this.harvestCount,
-                secretImageUnlocked: this.secretImageUnlocked
+                meteorsCollected: this.meteorsCollected,
+                secretImageUnlocked: this.secretImageUnlocked,
+                lootboxesBought: this.lootboxesBought,
+                epicLootboxesBought: this.epicLootboxesBought,
+                legendaryLootboxesBought: this.legendaryLootboxesBought
             };
         },
 
@@ -166,10 +181,15 @@
             this.totalPlayTime = data.totalPlayTime || 0;
             this.hugoTyped = data.hugoTyped || false;
             this.tristanTyped = data.tristanTyped || false;
+            this.technobladeTyped = data.technobladeTyped || false;
             this.code42Used = data.code42Used || false;
             this.freeWateringUnlocked = data.freeWateringUnlocked || false;
             this.harvestCount = data.harvestCount || 0;
+            this.meteorsCollected = data.meteorsCollected || 0;
             this.secretImageUnlocked = data.secretImageUnlocked || false;
+            this.lootboxesBought = data.lootboxesBought || 0;
+            this.epicLootboxesBought = data.epicLootboxesBought || 0;
+            this.legendaryLootboxesBought = data.legendaryLootboxesBought || 0;
         }
     };
 

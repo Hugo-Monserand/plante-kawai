@@ -11,11 +11,13 @@
         konamiIndex: 0,
         hugoIndex: 0,
         tristanIndex: 0,
+        technobladeIndex: 0,
 
         // Séquences
         KONAMI_CODE: ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'],
         HUGO_SEQUENCE: ['h', 'u', 'g', 'o'],
         TRISTAN_SEQUENCE: ['t', 'r', 'i', 's', 't', 'a', 'n'],
+        TECHNOBLADE_SEQUENCE: ['t', 'e', 'c', 'h', 'n', 'o', 'b', 'l', 'a', 'd', 'e'],
 
         /**
          * Active la récompense du Konami Code
@@ -55,6 +57,18 @@
             KP.Features.Achievements.check();
             KP.save();
             KP.emit('secret:tristan');
+        },
+
+        /**
+         * Active le secret "technoblade"
+         */
+        activateTechnoblade: function() {
+            if (KP.State.technobladeTyped) return;
+
+            KP.State.technobladeTyped = true;
+            KP.Features.Achievements.check();
+            KP.save();
+            KP.emit('secret:technoblade');
         },
 
         /**
@@ -142,6 +156,20 @@
                 this.tristanIndex = 0;
                 if (key === this.TRISTAN_SEQUENCE[0]) {
                     this.tristanIndex = 1;
+                }
+            }
+
+            // Technoblade
+            if (key === this.TECHNOBLADE_SEQUENCE[this.technobladeIndex]) {
+                this.technobladeIndex++;
+                if (this.technobladeIndex === this.TECHNOBLADE_SEQUENCE.length) {
+                    this.activateTechnoblade();
+                    this.technobladeIndex = 0;
+                }
+            } else {
+                this.technobladeIndex = 0;
+                if (key === this.TECHNOBLADE_SEQUENCE[0]) {
+                    this.technobladeIndex = 1;
                 }
             }
         },
