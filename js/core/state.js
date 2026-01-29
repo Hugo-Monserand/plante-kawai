@@ -55,6 +55,8 @@
 
         // === Secrets débloqués ===
         secretImageUnlocked: false,
+        epicSecretImageUnlocked: false,
+        legendarySecretImageUnlocked: false,
 
         // === Boost actif ===
         activeBoost: null,
@@ -94,6 +96,8 @@
             this.harvestCount = 0;
             this.activeBoost = null;
             this.secretImageUnlocked = false;
+            this.epicSecretImageUnlocked = false;
+            this.legendarySecretImageUnlocked = false;
         },
 
         /**
@@ -130,7 +134,9 @@
                 code42Used: this.code42Used,
                 freeWateringUnlocked: this.freeWateringUnlocked,
                 harvestCount: this.harvestCount,
-                secretImageUnlocked: this.secretImageUnlocked
+                secretImageUnlocked: this.secretImageUnlocked,
+                epicSecretImageUnlocked: this.epicSecretImageUnlocked,
+                legendarySecretImageUnlocked: this.legendarySecretImageUnlocked
             };
         },
 
@@ -170,6 +176,8 @@
             this.freeWateringUnlocked = data.freeWateringUnlocked || false;
             this.harvestCount = data.harvestCount || 0;
             this.secretImageUnlocked = data.secretImageUnlocked || false;
+            this.epicSecretImageUnlocked = data.epicSecretImageUnlocked || false;
+            this.legendarySecretImageUnlocked = data.legendarySecretImageUnlocked || false;
         }
     };
 

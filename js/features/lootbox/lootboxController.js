@@ -132,6 +132,24 @@
                     reward.text = 'ULTRA RARE! Image débloquée dans Déco!';
                     reward.value = 1;
                     break;
+
+                case 'secret_image_epic':
+                    KP.State.epicSecretImageUnlocked = true;
+                    reward.isImage = true;
+                    reward.imageSrc = KP.Config.EpicSecretImage;
+                    reward.icon = '🌟';
+                    reward.text = 'ULTRA RARE ÉPIQUE! Image débloquée dans Déco!';
+                    reward.value = 1;
+                    break;
+
+                case 'secret_image_legendary':
+                    KP.State.legendarySecretImageUnlocked = true;
+                    reward.isImage = true;
+                    reward.imageSrc = KP.Config.LegendarySecretImage;
+                    reward.icon = '👑';
+                    reward.text = 'ULTRA RARE LÉGENDAIRE! Image débloquée dans Déco!';
+                    reward.value = 1;
+                    break;
             }
 
             return reward;
