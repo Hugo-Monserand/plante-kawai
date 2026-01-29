@@ -14,10 +14,10 @@
             rarity: 'rare',
             color: '#3498db',
             rewards: [
-                { type: 'money', min: 500, max: 2000, chance: 39 },
-                { type: 'crystals', min: 50, max: 200, chance: 30 },
-                { type: 'boost', duration: 30, chance: 20 },
-                { type: 'jackpot_money', amount: 10000, chance: 10 },
+                { type: 'money', min: 2000, max: 8000, chance: 39 },
+                { type: 'crystals', min: 200, max: 800, chance: 30 },
+                { type: 'boost', duration: 60, chance: 20 },
+                { type: 'jackpot_money', amount: 50000, chance: 10 },
                 { type: 'secret_image', chance: 1 }
             ]
         },
@@ -30,11 +30,11 @@
             rarity: 'epic',
             color: '#9b59b6',
             rewards: [
-                { type: 'money', min: 5000, max: 20000, chance: 35 },
-                { type: 'crystals', min: 500, max: 2000, chance: 30 },
-                { type: 'boost', duration: 60, chance: 15 },
+                { type: 'money', min: 20000, max: 80000, chance: 35 },
+                { type: 'crystals', min: 2000, max: 8000, chance: 30 },
+                { type: 'boost', duration: 120, chance: 15 },
                 { type: 'diamond_mine', chance: 10 },
-                { type: 'jackpot_money', amount: 100000, chance: 9 },
+                { type: 'jackpot_money', amount: 500000, chance: 9 },
                 { type: 'secret_image_epic', chance: 1 }
             ]
         },
@@ -47,12 +47,12 @@
             rarity: 'legendary',
             color: '#f1c40f',
             rewards: [
-                { type: 'money', min: 50000, max: 200000, chance: 30 },
-                { type: 'crystals', min: 5000, max: 20000, chance: 25 },
-                { type: 'boost', duration: 120, chance: 10 },
+                { type: 'money', min: 200000, max: 800000, chance: 30 },
+                { type: 'crystals', min: 20000, max: 80000, chance: 25 },
+                { type: 'boost', duration: 300, chance: 10 },
                 { type: 'diamond_mine', chance: 15 },
-                { type: 'multi_diamond_mine', count: 3, chance: 10 },
-                { type: 'jackpot_money', amount: 1000000, chance: 9 },
+                { type: 'multi_diamond_mine', count: 5, chance: 10 },
+                { type: 'jackpot_money', amount: 5000000, chance: 9 },
                 { type: 'secret_image_legendary', chance: 1 }
             ]
         }
