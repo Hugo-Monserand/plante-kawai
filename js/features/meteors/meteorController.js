@@ -67,6 +67,7 @@
 
             meteor.classList.add('collected');
             KP.State.crystals++;
+            KP.State.meteorsCollected++;
             KP.Features.Economy.Crystals.updateDisplay();
             KP.save();
 

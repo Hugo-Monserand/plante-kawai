@@ -68,6 +68,15 @@
                 '</div>'
             ].join('');
 
+            popup.style.cursor = 'pointer';
+            popup.addEventListener('click', function() {
+                popup.classList.remove('show');
+                setTimeout(function() {
+                    popup.remove();
+                }, 500);
+                KP.Features.Achievements.open();
+            });
+
             document.body.appendChild(popup);
 
             // Animation d'entrée

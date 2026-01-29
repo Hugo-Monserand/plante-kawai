@@ -43,6 +43,15 @@
                 return;
             }
 
+            // Incrémenter le compteur de coffres achetés
+            KP.State.lootboxesBought++;
+            if (lootbox.id === 'lootbox_epic') {
+                KP.State.epicLootboxesBought++;
+            }
+            if (lootbox.id === 'lootbox_legendary') {
+                KP.State.legendaryLootboxesBought++;
+            }
+
             // Obtenir une récompense aléatoire
             var rewardDef = KP.Config.getRandomReward(lootbox);
             var reward = this._processReward(rewardDef);

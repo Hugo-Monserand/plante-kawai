@@ -309,6 +309,71 @@
             check: function() { return KP.State.crystals >= 1; }
         },
         {
+            id: 'premiere_boite',
+            name: 'Première boîte',
+            desc: 'Achète ton premier coffre',
+            icon: '📦',
+            check: function() { return KP.State.lootboxesBought >= 1; }
+        },
+        {
+            id: 'boite_epic',
+            name: 'Boîte Epic',
+            desc: 'Achète ta première boîte épique',
+            icon: '🎁',
+            check: function() { return KP.State.epicLootboxesBought >= 1; }
+        },
+        {
+            id: 'boite_legendary',
+            name: 'Legendary',
+            desc: 'Achète une boîte légendaire',
+            icon: '👑',
+            check: function() { return KP.State.legendaryLootboxesBought >= 1; }
+        },
+        {
+            id: 'fou_des_mines',
+            name: 'Fou des mines',
+            desc: 'Achète 1000 mines',
+            icon: '⛏️',
+            check: function() { return KP.State.diamondMines >= 1000; }
+        },
+        {
+            id: 'diamant_a_foison',
+            name: 'Diamant à foison',
+            desc: 'Débloque 1000 diamants',
+            icon: '💎',
+            check: function() { return KP.State.crystals >= 1000; }
+        },
+        {
+            id: 'lune_sacree',
+            name: 'Lune sacrée',
+            desc: 'Débloque l\'image de la lune secrète',
+            icon: '🌙',
+            secret: true,
+            check: function() { return KP.State.secretImageUnlocked; }
+        },
+        {
+            id: 'fou_du_gambling',
+            name: 'Fou du gambling',
+            desc: 'Achète 100 coffres',
+            icon: '🎰',
+            check: function() { return KP.State.lootboxesBought >= 100; }
+        },
+        {
+            id: 'etoile_fileur_pro',
+            name: 'Étoile fileur pro',
+            desc: 'Attrape 50 étoiles filantes',
+            icon: '☄️',
+            check: function() { return KP.State.meteorsCollected >= 50; }
+        },
+        {
+            id: 'comment',
+            name: 'Comment?',
+            desc: 'Attrape 1000 étoiles filantes',
+            icon: '🤯',
+            secret: true,
+            check: function() { return KP.State.meteorsCollected >= 1000; }
+        },
+        {
             id: 'nom_de_dieu',
             name: 'Nom de dieu',
             desc: 'Tape "hugo" avec ton clavier',
@@ -323,6 +388,14 @@
             icon: '🤝',
             secret: true,
             check: function() { return KP.State.tristanTyped; }
+        },
+        {
+            id: 'technoblade_never_die',
+            name: 'Technoblade never die',
+            desc: 'Tape "technoblade" avec ton clavier',
+            icon: '🐷',
+            secret: true,
+            check: function() { return KP.State.technobladeTyped; }
         },
         {
             id: 'konami_master',
