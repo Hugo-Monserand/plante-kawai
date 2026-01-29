@@ -60,6 +60,66 @@
                 container.appendChild(secretEl);
             }
 
+            // Ajouter l'item secret épique si débloqué
+            if (KP.State.epicSecretImageUnlocked) {
+                var epicSecretItem = {
+                    id: 'secret_epic',
+                    name: 'Image Épique',
+                    emoji: '<img class="deco-img" src="' + KP.Config.EpicSecretImage + '" alt="Epic">',
+                    price: 0,
+                    isImage: true
+                };
+
+                var epicSecretEl = document.createElement('div');
+                epicSecretEl.className = 'shop-item secret-item';
+
+                epicSecretEl.innerHTML = [
+                    '<div class="item-icon">' + epicSecretItem.emoji + '</div>',
+                    '<div class="item-info">',
+                    '    <div class="item-name secret-name">' + epicSecretItem.name + '</div>',
+                    '    <div class="item-desc">Ultra rare épique! Gratuit et illimité</div>',
+                    '</div>',
+                    '<button class="item-price secret-price">GRATUIT</button>'
+                ].join('');
+
+                epicSecretEl.querySelector('button').onclick = function(e) {
+                    e.stopPropagation();
+                    self.buySecret(epicSecretItem);
+                };
+
+                container.appendChild(epicSecretEl);
+            }
+
+            // Ajouter l'item secret légendaire si débloqué
+            if (KP.State.legendarySecretImageUnlocked) {
+                var legendarySecretItem = {
+                    id: 'secret_legendary',
+                    name: 'Image Légendaire',
+                    emoji: '<img class="deco-img" src="' + KP.Config.LegendarySecretImage + '" alt="Legendary">',
+                    price: 0,
+                    isImage: true
+                };
+
+                var legendarySecretEl = document.createElement('div');
+                legendarySecretEl.className = 'shop-item secret-item';
+
+                legendarySecretEl.innerHTML = [
+                    '<div class="item-icon">' + legendarySecretItem.emoji + '</div>',
+                    '<div class="item-info">',
+                    '    <div class="item-name secret-name">' + legendarySecretItem.name + '</div>',
+                    '    <div class="item-desc">Ultra rare légendaire! Gratuit et illimité</div>',
+                    '</div>',
+                    '<button class="item-price secret-price">GRATUIT</button>'
+                ].join('');
+
+                legendarySecretEl.querySelector('button').onclick = function(e) {
+                    e.stopPropagation();
+                    self.buySecret(legendarySecretItem);
+                };
+
+                container.appendChild(legendarySecretEl);
+            }
+
             KP.Config.DecoItems.forEach(function(item) {
                 var canAfford = KP.State.kawaiMoney >= item.price;
 
@@ -129,14 +189,26 @@
             });
 
             KP.State.placedDecoItems.forEach(function(placed, index) {
-                // Gérer l'item secret
+                // Gérer les items secrets
                 var item;
-                var isSecretItem = placed.type === 'secret_cat';
+                var isSecretItem = placed.type === 'secret_cat' || placed.type === 'secret_epic' || placed.type === 'secret_legendary';
 
-                if (isSecretItem) {
+                if (placed.type === 'secret_cat') {
                     item = {
                         id: 'secret_cat',
                         emoji: '<img class="deco-img secret-deco-img" src="' + KP.Config.SecretImage + '" alt="Chat">',
+                        isImage: true
+                    };
+                } else if (placed.type === 'secret_epic') {
+                    item = {
+                        id: 'secret_epic',
+                        emoji: '<img class="deco-img secret-deco-img" src="' + KP.Config.EpicSecretImage + '" alt="Epic">',
+                        isImage: true
+                    };
+                } else if (placed.type === 'secret_legendary') {
+                    item = {
+                        id: 'secret_legendary',
+                        emoji: '<img class="deco-img secret-deco-img" src="' + KP.Config.LegendarySecretImage + '" alt="Legendary">',
                         isImage: true
                     };
                 } else {
